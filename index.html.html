@@ -41,7 +41,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
-            background: radial-gradient(circle at 50% 50%, #0b1016 0%, #000000 100%);
+            background: radial-gradient(circle at 50% 50%, #11151c 0%, #000000 100%);
         }
 
         .noise-overlay {
@@ -55,10 +55,9 @@
             position: fixed;
             top: 30px;
             left: 30px;
-            width: 120px; /* Increased size slightly */
+            width: 120px;
             height: auto;
             z-index: 100;
-            /* Magic CSS to remove white background on dark theme */
             filter: invert(1) grayscale(1) brightness(1.5); 
             mix-blend-mode: screen; 
             opacity: 0.9;
@@ -170,7 +169,6 @@
             font-family: var(--font-heading); font-size: 3.2rem;
             color: #fff; margin: 0 0 5px 0;
             line-height: 1.1;
-            /* Gradient Text */
             background: linear-gradient(to bottom, #ffffff, #e0e0e0);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
@@ -194,13 +192,50 @@
         }
 
         .stock-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-        .stock-val { font-size: 1.4rem; font-weight: 600; color: #fff; font-family: var(--font-body); }
-        .stock-percent { font-size: 4rem; font-family: var(--font-heading); color: var(--gold-accent); line-height: 1; }
         
+        /* NEW STYLES FOR POPPING NUMBERS */
+        .target-display {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #8b949e; /* Muted tech grey */
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .achieved-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--positive-green);
+            font-family: 'JetBrains Mono', monospace;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            animation: pulse-green-text 2s infinite ease-in-out;
+        }
+
+        .stock-percent { 
+            font-size: 4rem; 
+            font-family: var(--font-heading); 
+            color: var(--gold-accent); 
+            line-height: 1; 
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            animation: gold-pulse 3s infinite ease-in-out;
+        }
+        
+        @keyframes pulse-green-text {
+            0% { transform: scale(1); text-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
+            50% { transform: scale(1.02); text-shadow: 0 0 30px rgba(0, 255, 136, 0.7); }
+            100% { transform: scale(1); text-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
+        }
+
+        @keyframes gold-pulse {
+            0% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+            50% { transform: scale(1.02); text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); }
+            100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+        }
+
         .trend-indicator {
             color: var(--positive-green); font-size: 1.2rem; margin-left: 10px;
-            animation: pulse-green 2s infinite;
+            animation: blink 1s infinite;
         }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         /* Stock Bar (Progress) */
         .stock-bar-container {
@@ -268,10 +303,6 @@
             0%, 100% { transform: scale(1.0); }
             50% { transform: scale(1.03); }
         }
-        
-        @keyframes pulse-green {
-            0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; }
-        }
 
         /* --- NAVIGATION --- */
         .ui-controls {
@@ -309,7 +340,7 @@
         .hero-title {
             font-size: 5.5vw;
             line-height: 1.1;
-            /* 3D Cinematic Gold Text - STATIC to prevent lag */
+            /* 3D Cinematic Gold Text */
             color: #D4AF37;
             text-shadow: 
                 0 1px 0 #8a6e15,
@@ -318,7 +349,7 @@
                 0 4px 0 #8a6e15,
                 0 0 30px rgba(212, 175, 55, 0.6),
                 0 0 60px rgba(212, 175, 55, 0.4);
-            transform: translateY(0); /* Static position */
+            transform: translateY(0); 
         }
 
         @keyframes shine {
@@ -421,11 +452,11 @@
                     <div class="stock-row" style="margin-top: 20px;">
                         <div>
                             <div class="stock-label">Target</div>
-                            <div class="stock-val">₹ 1,49,400</div>
+                            <div class="target-display">₹ 1,49,400</div>
                         </div>
                         <div style="text-align: right;">
                             <div class="stock-label">Achieved</div>
-                            <div class="stock-val" style="color: var(--positive-green);">₹ 9,63,236</div>
+                            <div class="achieved-display">₹ 9,63,236</div>
                         </div>
                     </div>
                     <!-- Stock Bar -->
@@ -446,7 +477,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="294.09">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 65,813</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 1,93,551</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 65,813</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 1,93,551</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 85%;"></div></div>
                 </div>
             </div>
@@ -461,7 +492,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="271.23">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 12,54,449</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 12,54,449</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 80%;"></div></div>
                 </div>
             </div>
@@ -476,7 +507,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="259.64">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 12,85,197</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 12,85,197</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 78%;"></div></div>
                 </div>
             </div>
@@ -491,7 +522,7 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="212.07">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 6,75,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 14,31,456</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 6,75,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 14,31,456</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
                 </div>
             </div>
@@ -506,7 +537,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="189.82">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 2,70,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 5,12,501</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 2,70,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,12,501</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
                 </div>
             </div>
@@ -521,7 +552,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="181.83">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 3,12,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 5,68,221</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 3,12,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,68,221</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 63%;"></div></div>
                 </div>
             </div>
@@ -536,7 +567,7 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="168.88">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 6,00,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 10,13,297</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 6,00,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 10,13,297</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 60%;"></div></div>
                 </div>
             </div>
@@ -551,7 +582,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="146.88">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 6,79,314</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 6,79,314</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
                 </div>
             </div>
@@ -566,7 +597,7 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="141.22">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 6,99,045</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 6,99,045</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 50%;"></div></div>
                 </div>
             </div>
@@ -581,7 +612,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="137.44">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 46,059</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 63,305</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 46,059</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 63,305</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 48%;"></div></div>
                 </div>
             </div>
@@ -596,7 +627,7 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="132.84">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,30,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 5,71,229</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,30,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,71,229</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 45%;"></div></div>
                 </div>
             </div>
@@ -611,7 +642,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="131.48">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 3,30,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 4,33,884</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 3,30,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 4,33,884</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 44%;"></div></div>
                 </div>
             </div>
@@ -626,7 +657,7 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="126.27">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 90,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 1,13,644</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 90,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 1,13,644</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
                 </div>
             </div>
@@ -641,7 +672,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="125.56">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 5,80,738</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,80,738</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
                 </div>
             </div>
@@ -656,7 +687,7 @@
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="118.99">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 3,12,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 3,71,854</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 3,12,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 3,71,854</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 38%;"></div></div>
                 </div>
             </div>
@@ -671,17 +702,16 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="116.02">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 5,74,323</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,74,323</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 37%;"></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1hD5TUxfgUs1eHH3eUy3Y_Ioa8WC7p2lB&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sagar'"></div></div>
         </div>
 
-        <!-- 20. CATEGORY: LEADERS COLLECTIVE -->
+        <!-- 20. CATEGORY: LEADERS TEAM -->
         <div class="slide center-layout">
-            <h1>LEADERS COLLECTIVE TARGET</h1>
-            <p style="color: var(--text-secondary); margin-top: 20px;">TEAM TARGET ACHIEVERS</p>
+            <h1>LEADERS TEAM TARGET ACHIEVERS</h1>
         </div>
 
         <!-- 21. KARAN KUMAR (Collective) -->
@@ -692,7 +722,7 @@
                 <div class="designation">TEAM LEADER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="154.90">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 18,95,026</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 29,34,533</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 18,95,026</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 29,34,533</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
                 </div>
             </div>
@@ -707,7 +737,7 @@
                 <div class="designation">MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="128.80">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 45,00,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 57,95,049</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 45,00,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 57,95,049</div></div></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
                 </div>
             </div>
@@ -791,7 +821,7 @@
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="212.07">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 6,75,000</div></div><div style="text-align: right;"><div class="stock-label">Revenue</div><div class="stock-val" style="color: var(--positive-green);">₹ 14,31,456</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 6,75,000</div></div><div style="text-align: right;"><div class="stock-label">Revenue</div><div class="achieved-display">₹ 14,31,456</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div>
@@ -811,7 +841,7 @@
                 <div class="designation">TEAM LEADER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="154.85">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 18,95,026</div></div><div style="text-align: right;"><div class="stock-label">Team Revenue</div><div class="stock-val" style="color: var(--positive-green);">₹ 29,34,533</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 18,95,026</div></div><div style="text-align: right;"><div class="stock-label">Team Revenue</div><div class="achieved-display">₹ 29,34,533</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div>
@@ -825,7 +855,7 @@
                 <div class="designation">TEAM LEADER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="49.92">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 18,10,375</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 9,03,793</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 18,10,375</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 9,03,793</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=19XYbZaa3VJlYvwutQoz0RrZnFQKZdkqY&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Punyashree'"></div></div>
@@ -845,7 +875,7 @@
                 <div class="designation">MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="128.78">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 45,00,000</div></div><div style="text-align: right;"><div class="stock-label">Total Revenue</div><div class="stock-val" style="color: var(--positive-green);">₹ 57,95,049</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 45,00,000</div></div><div style="text-align: right;"><div class="stock-label">Total Revenue</div><div class="achieved-display">₹ 57,95,049</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Meghna'"></div></div>
@@ -859,7 +889,7 @@
                 <div class="designation">MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="90.47">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 37,97,559</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 34,35,648</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 37,97,559</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 34,35,648</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1aPvSxgBQ1iI9KJWg0L4S2sIm3l3aeZZK&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Ranjan'"></div></div>
@@ -873,7 +903,7 @@
                 <div class="designation">MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="83.95">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 52,50,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 44,07,151</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 52,50,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 44,07,151</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1DTSGcsZiFBWYsYR9ZVKoKUcqs4nQiZEU&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Dikshita'"></div></div>
@@ -887,7 +917,7 @@
                 <div class="designation">MANAGER</div>
                 <div class="financial-card">
                     <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="69.36">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="stock-val">₹ 44,50,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="stock-val" style="color: var(--positive-green);">₹ 30,86,510</div></div></div>
+                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 44,50,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 30,86,510</div></div></div>
                 </div>
             </div>
             <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1gxgQyxZcK2WzCv59wWUc_jvuPkTQ7V1r&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Kumar+Shanu'"></div></div>
