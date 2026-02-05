@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OnePaper Rewards - Executive Suite</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <!-- Importing Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,10 +13,10 @@
     <style>
         :root {
             --bg-dark: #050505;
-            --glass-surface: rgba(20, 25, 40, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-surface: rgba(16, 20, 30, 0.85); /* Increased opacity for better readability */
+            --glass-border: rgba(255, 255, 255, 0.15);
             --gold-accent: #D4AF37; 
-            --gold-glow: rgba(212, 175, 55, 0.2);
+            --gold-glow: rgba(212, 175, 55, 0.3);
             --text-primary: #FFFFFF;
             --text-secondary: #A0A0A0;
             --positive-green: #00ff88;
@@ -40,14 +41,14 @@
         #canvas-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
+            z-index: 1; /* Lowest layer */
             background: radial-gradient(circle at 50% 50%, #11151c 0%, #000000 100%);
         }
 
         .noise-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-            z-index: 1; pointer-events: none;
+            z-index: 2; pointer-events: none;
         }
 
         /* --- LOGO & FULLSCREEN UI --- */
@@ -57,7 +58,7 @@
             left: 30px;
             width: 120px;
             height: auto;
-            z-index: 100;
+            z-index: 1000; /* Top layer */
             filter: invert(1) grayscale(1) brightness(1.5); 
             mix-blend-mode: screen; 
             opacity: 0.9;
@@ -67,7 +68,7 @@
             position: fixed;
             top: 30px;
             right: 30px;
-            z-index: 100;
+            z-index: 1000; /* Top layer */
             background: rgba(255,255,255,0.1);
             border: 1px solid var(--glass-border);
             color: var(--gold-accent);
@@ -88,7 +89,8 @@
 
         /* --- MAIN LAYOUT --- */
         #app-root {
-            position: relative; z-index: 10;
+            position: relative; 
+            z-index: 10; /* Above background */
             width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
             padding: 20px;
@@ -101,21 +103,23 @@
             height: auto; min-height: 70vh;
             display: flex;
             opacity: 0;
-            transform: translateY(40px) scale(0.95);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
             pointer-events: none;
             
             background: var(--glass-surface);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px); /* Strong blur for text legibility */
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 4px;
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            visibility: hidden; /* Fix for "not showing" - hide until active */
         }
 
         .slide.active {
-            opacity: 1; transform: translateY(0) scale(1);
-            pointer-events: auto; z-index: 20;
+            opacity: 1; transform: translateY(0);
+            pointer-events: auto; z-index: 50; /* Active slide on top */
+            visibility: visible;
         }
 
         /* Top Accent Bar */
@@ -123,7 +127,7 @@
             content: ''; position: absolute;
             top: 0; left: 0; width: 100%; height: 3px;
             background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
-            box-shadow: 0 0 20px var(--gold-glow);
+            box-shadow: 0 0 15px var(--gold-glow);
         }
 
         /* Content Areas */
@@ -138,7 +142,7 @@
             flex: 0.8;
             padding: 40px;
             display: flex; justify-content: center; align-items: center;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.2);
             position: relative; overflow: hidden;
         }
 
@@ -153,7 +157,8 @@
         h1 {
             font-family: var(--font-heading); font-size: 4.5rem;
             color: var(--text-primary); margin: 0; letter-spacing: -2px; line-height: 1;
-            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            /* Static gradient for stability */
+            background: linear-gradient(135deg, #fff 20%, #ccc 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
@@ -169,8 +174,7 @@
             font-family: var(--font-heading); font-size: 3.2rem;
             color: #fff; margin: 0 0 5px 0;
             line-height: 1.1;
-            background: linear-gradient(to bottom, #ffffff, #e0e0e0);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .designation {
@@ -193,49 +197,29 @@
 
         .stock-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* NEW STYLES FOR POPPING NUMBERS */
+        /* Stabilized Text Styles */
         .target-display {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #8b949e; /* Muted tech grey */
+            font-size: 1.2rem; font-weight: 500;
+            color: #8b949e; 
             font-family: 'JetBrains Mono', monospace;
         }
 
         .achieved-display {
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-size: 1.8rem; font-weight: 800;
             color: var(--positive-green);
             font-family: 'JetBrains Mono', monospace;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
-            animation: pulse-green-text 2s infinite ease-in-out;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
         }
 
         .stock-percent { 
-            font-size: 4rem; 
-            font-family: var(--font-heading); 
-            color: var(--gold-accent); 
-            line-height: 1; 
-            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-            animation: gold-pulse 3s infinite ease-in-out;
+            font-size: 4rem; font-family: var(--font-heading); 
+            color: var(--gold-accent); line-height: 1; 
+            text-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
         }
         
-        @keyframes pulse-green-text {
-            0% { transform: scale(1); text-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
-            50% { transform: scale(1.02); text-shadow: 0 0 30px rgba(0, 255, 136, 0.7); }
-            100% { transform: scale(1); text-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
-        }
-
-        @keyframes gold-pulse {
-            0% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-            50% { transform: scale(1.02); text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); }
-            100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-        }
-
         .trend-indicator {
             color: var(--positive-green); font-size: 1.2rem; margin-left: 10px;
-            animation: blink 1s infinite;
         }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         /* Stock Bar (Progress) */
         .stock-bar-container {
@@ -252,7 +236,7 @@
             background: linear-gradient(90deg, var(--gold-accent), #fff);
             width: 0%;
             border-radius: 3px;
-            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: width 1s ease-out; /* Smoother, simpler transition */
             box-shadow: 0 0 10px var(--gold-glow);
         }
 
@@ -261,7 +245,7 @@
             font-size: 0.7rem; color: #666; font-family: 'JetBrains Mono', monospace;
         }
 
-        /* --- PORTRAIT (ALIVE EFFECT) --- */
+        /* --- PORTRAIT --- */
         .portrait-frame {
             width: 100%; height: 100%;
             max-width: 360px; aspect-ratio: 3/4;
@@ -272,36 +256,24 @@
             overflow: hidden;
         }
 
-        /* Breathing Animation for "Alive" feel */
         .portrait-frame img {
             width: 100%; height: 100%;
             object-fit: cover;
-            filter: contrast(110%) brightness(1.1);
-            animation: breathe 6s ease-in-out infinite;
-            transform-origin: center;
+            /* Static filter to prevent flickering */
+            filter: contrast(105%) brightness(1.05); 
         }
 
-        /* Black Vignette Overlay (Portrait Mode) */
         .portrait-frame::after {
-            content: ''; position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: radial-gradient(circle at 50% 35%, transparent 30%, #000 90%);
             z-index: 2; pointer-events: none;
         }
 
-        /* Scanline Effect */
         .portrait-frame::before {
-            content: ''; position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.02) 50%);
             background-size: 100% 4px;
             z-index: 3; pointer-events: none;
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1.0); }
-            50% { transform: scale(1.03); }
         }
 
         /* --- NAVIGATION --- */
@@ -322,38 +294,29 @@
 
         .progress-indicator { position: fixed; bottom: 35px; left: 40px; font-size: 0.8rem; color: #666; letter-spacing: 2px; }
 
-        /* --- CINEMATIC TEXT ANIMATIONS --- */
-        .cinematic-glow {
+        /* --- STABLE INTRO TEXT STYLE --- */
+        /* Replaced animation with static premium style to fix blinking */
+        .intro-date-text {
             font-size: 1.2rem;
             text-transform: uppercase;
-            letter-spacing: 8px;
+            letter-spacing: 6px;
             font-weight: 800;
-            background: linear-gradient(90deg, #666 20%, #fff 50%, #666 80%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 4s linear infinite;
+            color: #fff;
             margin-bottom: 30px;
-            border: none !important;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
         }
 
         .hero-title {
             font-size: 5.5vw;
             line-height: 1.1;
-            /* 3D Cinematic Gold Text */
-            color: #D4AF37;
+            color: #D4AF37; /* Solid Gold Color */
+            /* Static 3D effect using text-shadow */
             text-shadow: 
-                0 1px 0 #8a6e15,
                 0 2px 0 #8a6e15,
-                0 3px 0 #8a6e15,
-                0 4px 0 #8a6e15,
-                0 0 30px rgba(212, 175, 55, 0.6),
-                0 0 60px rgba(212, 175, 55, 0.4);
-            transform: translateY(0); 
-        }
-
-        @keyframes shine {
-            to { background-position: 200% center; }
+                0 4px 0 #5c490e,
+                0 0 40px rgba(212, 175, 55, 0.4);
         }
 
         /* --- RESPONSIVE --- */
@@ -420,13 +383,13 @@
 
     <div id="app-root">
         
-        <!-- 1. INTRO (CINEMATIC) -->
+        <!-- 1. INTRO (STABILIZED) -->
         <div class="slide center-layout active">
-            <h2 class="cinematic-glow">OCTOBER • NOVEMBER • DECEMBER 2025</h2>
+            <div class="intro-date-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
             <h1 class="hero-title">REWARD & RECOGNITION</h1>
-            <div style="width: 60px; height: 2px; background: var(--gold-accent); margin: 40px auto; box-shadow: 0 0 20px var(--gold-accent);"></div>
-            <p style="letter-spacing: 3px; color: var(--gold-accent); font-size: 0.9rem;">3 MONTHS PERFORMANCE</p>
-            <p style="letter-spacing: 2px; color: #666; font-size: 0.8rem; margin-top: 20px;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
+            <div style="width: 80px; height: 3px; background: var(--gold-accent); margin: 40px auto; box-shadow: 0 0 20px var(--gold-accent);"></div>
+            <p style="letter-spacing: 3px; color: var(--gold-accent); font-size: 1.1rem; font-weight: bold;">3 MONTHS PERFORMANCE</p>
+            <p style="letter-spacing: 2px; color: #888; font-size: 0.9rem; margin-top: 20px;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
         </div>
 
         <!-- 2. CATEGORY: RM COLLECTIVE -->
@@ -867,6 +830,8 @@
         <div class="slide center-layout">
             <h1>THANK YOU</h1>
             <p style="margin-top: 30px; letter-spacing: 2px;">LET'S ACHIEVE MORE IN Q4</p>
+            <div class="footer-info">OnePaper Research Analysts Pvt Ltd</div>
+            <div class="slide-counter">41 / 41</div>
         </div>
 
     </div>
@@ -1009,6 +974,14 @@
     });
 
     showSlide(0);
+
+    // Initial Safety Check: Ensure the first slide is visible if GSAP fails
+    window.onload = function() {
+        if (!window.gsap) {
+            document.querySelector('.slide').classList.add('active');
+            console.warn("GSAP failed to load. Fallback active.");
+        }
+    };
 
 </script>
 </body>
