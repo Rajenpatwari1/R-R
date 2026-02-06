@@ -66,13 +66,13 @@
         /* --- UI & LAYOUT --- */
         .company-logo {
             position: fixed;
-            top: 30px; left: 30px;
-            width: 150px;
+            top: 20px; left: 30px;
+            width: 140px;
             z-index: 1000;
-            /* LOGO FIX: Removed border, padding and background */
-            filter: invert(1) brightness(2); /* Brighter and Inverted for black bg */
-            mix-blend-mode: screen; /* Seamless blending */
-            opacity: 1;
+            /* LOGO FIX: Invert converts white bg to black, Screen blend mode drops the black, keeping logo visible */
+            filter: invert(1);
+            mix-blend-mode: screen;
+            opacity: 0.9;
         }
 
         .fullscreen-btn {
@@ -90,6 +90,7 @@
             position: fixed; top: 42px; right: 90px;
             font-family: var(--font-ticker); color: var(--gold-primary);
             font-size: 1rem; letter-spacing: 2px; z-index: 1000;
+            background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px;
         }
 
         .nav-controls {
@@ -125,44 +126,51 @@
             opacity: 1; visibility: visible; z-index: 20;
         }
 
-        /* --- GRID SYSTEM --- */
+        /* --- GRID SYSTEM (CENTERED) --- */
         .layout-split {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr; 
-            width: 100%; max-width: 1300px;
-            gap: 50px;
+            grid-template-columns: 1fr 1fr; /* Equal width */
+            width: 100%; max-width: 1400px;
+            gap: 60px;
             align-items: center;
+            justify-items: center; /* Center items in grid cells */
         }
 
         .layout-center {
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             text-align: center;
-            max-width: 1000px;
+            max-width: 1200px;
+        }
+
+        .content-panel {
+            display: flex; flex-direction: column;
+            align-items: center; /* Center horizontally */
+            text-align: center; /* Center text */
+            width: 100%;
         }
 
         /* --- CONTENT STYLING --- */
         
         .label-gold {
             font-family: var(--font-head);
-            font-size: clamp(2.2rem, 3.5vw, 4rem); 
+            font-size: clamp(2rem, 3.5vw, 4rem); 
             line-height: 1.1;
             color: var(--gold-primary);
             text-transform: uppercase; 
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-            display: block;
+            display: inline-block;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 10px;
-            width: fit-content;
+            padding-bottom: 15px;
         }
 
         .winner-name {
             font-family: var(--font-body);
-            font-size: clamp(1.5rem, 2.5vw, 2.5rem); 
+            font-size: clamp(1.8rem, 2.5vw, 2.5rem); 
             font-weight: 700;
             color: #fff; 
-            margin-bottom: 5px; 
+            margin-bottom: 10px; 
             line-height: 1.2;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -172,29 +180,35 @@
             font-family: var(--font-body); 
             font-size: 0.9rem;
             color: var(--text-muted); 
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             text-transform: uppercase; 
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             font-weight: 400;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
+            display: inline-block;
         }
 
-        /* --- STATS BOX (RESTORED PREMIUM LOOK) --- */
+        /* --- STATS BOX (CENTERED) --- */
         .stats-box {
             width: 100%;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(10,10,10,0.5);
-            padding: 20px;
+            max-width: 450px;
+            background: rgba(10,10,10,0.6);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
-            border-left: 3px solid var(--gold-primary);
         }
 
         .stat-row {
             display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 10px;
         }
 
         .stock-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-body); text-align: left; }
         
-        /* Restored Font to Cinzel (Serif) for Premium Look */
         .target-display {
             font-size: 1.4rem; font-weight: 500;
             color: #ccc; 
@@ -255,8 +269,6 @@
 
         .big-percent-wrapper {
             display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
             justify-content: center; /* Center align percentage */
             width: 100%;
         }
@@ -383,10 +395,10 @@
         <!-- 1. INTRO (STABILIZED) -->
         <div class="slide-container active layout-center">
             <div class="intro-date-text anim-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
-            <h1 class="hero-title anim-text">REWARD & RECOGNITION</h1>
+            <h1 class="hero-title anim-text">QUARTERLY PERFORMANCE REPORT</h1>
             <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
-            <p style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.1rem; font-weight: bold;">QUARTERLY PERFORMANCE REPORT</p>
-            <p class="anim-text" style="letter-spacing: 3px; color: #fff; font-size: 2rem; margin-top: 40px; font-family: var(--font-head); text-transform: uppercase; font-weight: 700;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
+            <!-- Bigger Company Name -->
+            <p class="anim-text" style="letter-spacing: 4px; color: #fff; font-size: 2.5rem; margin-top: 40px; font-family: var(--font-head); text-transform: uppercase; font-weight: 700; text-shadow: 0 0 30px rgba(255,255,255,0.4);">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
         </div>
 
         <!-- 2. CATEGORY: RM COLLECTIVE -->
@@ -806,7 +818,6 @@
 
     </div>
 
-    <!-- UI: Navigation and Counter -->
     <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
     
     <div class="nav-controls">
@@ -830,50 +841,43 @@
         const posArray = new Float32Array(count * 3);
         
         for(let i = 0; i < count * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 60; // Wider spread
+            posArray[i] = (Math.random() - 0.5) * 60;
         }
         
         geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         const material = new THREE.PointsMaterial({
-            size: 0.04,
-            color: 0xD4AF37, // Gold Particles
+            size: 0.05,
+            color: 0xD4AF37,
             transparent: true,
-            opacity: 0.7,
-            sizeAttenuation: true
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
         });
         
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
-        camera.position.z = 20;
+        
+        // Connect Lines
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.15 });
+        const linesGeometry = new THREE.BufferGeometry();
+        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+        scene.add(linesMesh);
 
-        // Mouse Interaction (Subtle Parallax)
-        let mouseX = 0;
-        let mouseY = 0;
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        camera.position.z = 25;
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX / window.innerWidth - 0.5;
+            mouseY = e.clientY / window.innerHeight - 0.5;
         });
-
-        // Animation Clock
-        const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
+            particles.rotation.y += 0.001;
+            particles.rotation.x += 0.0005;
+            linesMesh.rotation.copy(particles.rotation);
             
-            const elapsedTime = clock.getElapsedTime();
-
-            // 1. Continuous Rotation (The "Alive" movement)
-            particles.rotation.y = elapsedTime * 0.05; // Smooth constant spin
-            particles.rotation.x = elapsedTime * 0.02; // Slight tilt spin
-
-            // 2. Cinematic Floating Camera (The "7D" feel)
-            // Moves the camera in a gentle wave pattern
-            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05; // Gentle mouse follow
-            camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
-            
-            // Add automatic drift
-            camera.position.x += Math.sin(elapsedTime * 0.3) * 0.02;
-            camera.position.y += Math.cos(elapsedTime * 0.2) * 0.02;
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
             
             renderer.render(scene, camera);
@@ -886,7 +890,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // --- Slide Logic ---
+        // Presentation Logic
         const slides = document.querySelectorAll('.slide-container');
         const currEl = document.getElementById('curr-idx');
         const totalEl = document.getElementById('total-idx');
