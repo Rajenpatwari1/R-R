@@ -124,7 +124,7 @@
             opacity: 1; visibility: visible; z-index: 20;
         }
 
-        /* --- GRID SYSTEM (CENTERED FIX) --- */
+        /* --- GRID SYSTEM (CENTERED) --- */
         .layout-split {
             display: grid;
             grid-template-columns: 1fr 1fr; /* Equal width */
@@ -132,7 +132,7 @@
             gap: 60px;
             align-items: center;
             justify-items: center; /* Center items in grid cells */
-            margin: 0 auto; /* Force horizontal center */
+            margin: 0 auto;
         }
 
         .layout-center {
@@ -140,7 +140,7 @@
             justify-content: center; align-items: center;
             text-align: center;
             max-width: 1200px;
-            width: 100%; /* Ensure full width usage */
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -149,7 +149,7 @@
             align-items: center; /* Center horizontally */
             text-align: center; /* Center text */
             width: 100%;
-            justify-content: center; /* Vertical center */
+            justify-content: center;
         }
 
         /* --- CONTENT STYLING --- */
@@ -165,7 +165,7 @@
             display: inline-block;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             padding-bottom: 15px;
-            margin-left: auto; margin-right: auto; /* Alignment */
+            margin-left: auto; margin-right: auto;
         }
 
         .winner-name {
@@ -192,7 +192,7 @@
             display: inline-block;
         }
 
-        /* --- STATS BOX (CENTERED) --- */
+        /* --- STATS BOX --- */
         .stats-box {
             width: 100%;
             max-width: 450px;
@@ -202,7 +202,7 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
-            margin-left: auto; margin-right: auto; /* Center the box */
+            margin-left: auto; margin-right: auto;
         }
 
         .stat-row {
@@ -389,7 +389,7 @@
     <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶</button>
     
     <!-- Slide Counter (HIDDEN) -->
-    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">47</span></div>
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">46</span></div>
 
     <div class="nav-controls">
         <button class="nav-btn" onclick="changeSlide(-1)">←</button>
@@ -927,7 +927,7 @@
                 <div class="winner-name anim-text">KARAN KUMAR</div>
                 <div class="designation anim-text">TEAM LEADER</div>
                 <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Team Revenue</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
+                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
                     <div style="text-align:center;">
                         <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
                         <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.90">0</div><span class="percent-sym">%</span></div>
@@ -1021,7 +1021,7 @@
         <!-- 43. CATEGORY: TOP TL -->
         <div class="slide-container layout-center">
             <h1 class="label-gold" style="border:none; font-size:4rem;">TOP TEAM LEADER</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">TEAM PERFORMANCE RANKING</p>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">TEAM PERFORMANCE RANKING</p>
         </div>
 
         <!-- 44. KARAN -->
