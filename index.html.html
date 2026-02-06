@@ -120,13 +120,14 @@
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
             padding: 100px 40px 40px 40px; 
+            box-sizing: border-box; /* Ensure padding doesn't affect centering */
         }
         
         .slide-container.active {
             opacity: 1; visibility: visible; z-index: 20;
         }
 
-        /* --- GRID SYSTEM (CENTERED) --- */
+        /* --- GRID SYSTEM (CENTERED FIX) --- */
         .layout-split {
             display: grid;
             grid-template-columns: 1fr 1fr; /* Equal width */
@@ -134,6 +135,7 @@
             gap: 60px;
             align-items: center;
             justify-items: center; /* Center items in grid cells */
+            margin: 0 auto; /* Force horizontal center */
         }
 
         .layout-center {
@@ -142,6 +144,7 @@
             text-align: center;
             max-width: 1200px;
             width: 100%; /* Ensure full width usage */
+            margin: 0 auto;
         }
 
         .content-panel {
@@ -149,6 +152,7 @@
             align-items: center; /* Center horizontally */
             text-align: center; /* Center text */
             width: 100%;
+            justify-content: center; /* Vertical center */
         }
 
         /* --- CONTENT STYLING --- */
@@ -387,7 +391,7 @@
     <!-- Fullscreen Toggle -->
     <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶</button>
     
-    <!-- Slide Counter (Top Right) -->
+    <!-- Centered Slide Counter -->
     <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
 
     <div class="nav-controls">
@@ -823,6 +827,7 @@
 
     </div>
 
+    <!-- UI: Navigation and Counter -->
     <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
     
     <div class="nav-controls">
@@ -846,43 +851,50 @@
         const posArray = new Float32Array(count * 3);
         
         for(let i = 0; i < count * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 60;
+            posArray[i] = (Math.random() - 0.5) * 60; // Wider spread
         }
         
         geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         const material = new THREE.PointsMaterial({
-            size: 0.05,
-            color: 0xD4AF37,
+            size: 0.04,
+            color: 0xD4AF37, // Gold Particles
             transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
+            opacity: 0.7,
+            sizeAttenuation: true
         });
         
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
-        
-        // Connect Lines
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.15 });
-        const linesGeometry = new THREE.BufferGeometry();
-        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
-        scene.add(linesMesh);
+        camera.position.z = 20;
 
-        camera.position.z = 25;
-        let mouseX = 0, mouseY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX / window.innerWidth - 0.5;
-            mouseY = e.clientY / window.innerHeight - 0.5;
+        // Mouse Interaction (Subtle Parallax)
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
         });
+
+        // Animation Clock
+        const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
-            particles.rotation.y += 0.001;
-            particles.rotation.x += 0.0005;
-            linesMesh.rotation.copy(particles.rotation);
             
-            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
+            const elapsedTime = clock.getElapsedTime();
+
+            // 1. Continuous Rotation (The "Alive" movement)
+            particles.rotation.y = elapsedTime * 0.05; // Smooth constant spin
+            particles.rotation.x = elapsedTime * 0.02; // Slight tilt spin
+
+            // 2. Cinematic Floating Camera (The "7D" feel)
+            // Moves the camera in a gentle wave pattern
+            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05; // Gentle mouse follow
+            camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
+            
+            // Add automatic drift
+            camera.position.x += Math.sin(elapsedTime * 0.3) * 0.02;
+            camera.position.y += Math.cos(elapsedTime * 0.2) * 0.02;
             camera.lookAt(scene.position);
             
             renderer.render(scene, camera);
@@ -895,7 +907,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Presentation Logic
+        // --- Slide Logic ---
         const slides = document.querySelectorAll('.slide-container');
         const currEl = document.getElementById('curr-idx');
         const totalEl = document.getElementById('total-idx');
@@ -937,6 +949,12 @@
                         }}
                     );
                 }
+            });
+
+            // Graph Animation
+            const bars = activeSlide.querySelectorAll('.stock-bar-fill');
+            bars.forEach(b => {
+                gsap.fromTo(b, { width: "0%" }, { width: "100%", duration: 1.5, ease: "power2.out" });
             });
         }
 
