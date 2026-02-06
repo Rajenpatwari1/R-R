@@ -13,23 +13,27 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Cinzel (Luxury), Manrope (Body) -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Manrope:wght@300;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Premium Palette */
+            /* Premium Palette: Black & Gold */
             --bg-deep: #000000;
-            --panel-bg: rgba(20, 20, 25, 0.4);
+            --panel-bg: rgba(10, 10, 12, 0.7);
             
             --gold-primary: #D4AF37;
             --gold-light: #F8F1D2;
             --gold-dim: #8A7128;
+            
+            --stock-green: #00ff9d; /* Bright ticker green */
             
             --text-primary: #FFFFFF;
             --text-muted: #888888;
             
             --font-head: 'Cinzel', serif;
             --font-body: 'Manrope', sans-serif;
+            --font-ticker: 'Share Tech Mono', monospace; /* The Stock Market Font */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,9 +69,9 @@
             top: 30px; left: 30px;
             width: 150px;
             z-index: 1000;
-            /* LOGO FIX: Optimized for dark background */
-            filter: invert(1) grayscale(1) brightness(1.5);
-            mix-blend-mode: screen; 
+            /* LOGO FIX: Removed border, padding and background */
+            filter: invert(1) brightness(2); /* Brighter and Inverted for black bg */
+            mix-blend-mode: screen; /* Seamless blending */
             opacity: 1;
         }
 
@@ -82,15 +86,10 @@
         }
         .fullscreen-btn:hover { background: var(--gold-primary); color: #000; }
 
-        /* Slide Counter */
         .slide-counter {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            font-family: var(--font-body); color: #fff;
-            font-size: 0.9rem; letter-spacing: 2px; z-index: 1000;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 30px;
+            position: fixed; top: 42px; right: 90px;
+            font-family: var(--font-ticker); color: var(--gold-primary);
+            font-size: 1rem; letter-spacing: 2px; z-index: 1000;
         }
 
         .nav-controls {
@@ -119,7 +118,7 @@
             display: flex; align-items: center; justify-content: center;
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
-            padding: 100px 40px 100px 40px; 
+            padding: 100px 40px 40px 40px; 
         }
         
         .slide-container.active {
@@ -129,11 +128,10 @@
         /* --- GRID SYSTEM --- */
         .layout-split {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Equal width for better balance */
-            width: 100%; max-width: 1400px;
-            gap: 60px;
+            grid-template-columns: 1.1fr 0.9fr; 
+            width: 100%; max-width: 1300px;
+            gap: 50px;
             align-items: center;
-            justify-items: center; /* Center content within grid cells */
         }
 
         .layout-center {
@@ -145,27 +143,18 @@
 
         /* --- CONTENT STYLING --- */
         
-        /* Centered Content Panel */
-        .content-panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center; /* ALIGNMENT FIX: Center everything */
-            text-align: center; /* ALIGNMENT FIX: Center text */
-            width: 100%;
-        }
-
         .label-gold {
             font-family: var(--font-head);
-            font-size: clamp(2rem, 3.5vw, 4rem); 
+            font-size: clamp(2.2rem, 3.5vw, 4rem); 
             line-height: 1.1;
             color: var(--gold-primary);
             text-transform: uppercase; 
             margin-bottom: 15px;
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-            display: inline-block;
+            display: block;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             padding-bottom: 10px;
+            width: fit-content;
         }
 
         .winner-name {
@@ -189,24 +178,23 @@
             font-weight: 400;
         }
 
-        /* --- STATS BOX --- */
+        /* --- STATS BOX (RESTORED PREMIUM LOOK) --- */
         .stats-box {
             width: 100%;
-            max-width: 450px; /* Constrain width for better centering */
-            border-top: 1px solid rgba(255,255,255,0.15);
-            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10,10,10,0.5);
+            padding: 20px;
             display: flex; flex-direction: column; gap: 15px;
-            /* Border design */
-            position: relative;
+            border-left: 3px solid var(--gold-primary);
         }
-        
+
         .stat-row {
             display: flex; justify-content: space-between; align-items: flex-end;
-            width: 100%;
         }
 
         .stock-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-body); text-align: left; }
         
+        /* Restored Font to Cinzel (Serif) for Premium Look */
         .target-display {
             font-size: 1.4rem; font-weight: 500;
             color: #ccc; 
@@ -223,18 +211,54 @@
             animation: pulse-gold-text 2s infinite ease-in-out;
         }
 
-        .big-percent-wrapper {
-            display: flex; align-items: baseline; justify-content: center; gap: 10px; margin-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
-            width: 100%;
-        }
-        
         .stock-percent { 
             font-size: 4.5rem; font-family: var(--font-head); 
             color: var(--gold-primary); line-height: 1; 
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
             animation: gold-pulse 3s infinite ease-in-out;
+        }
+        
+        @keyframes pulse-gold-text {
+            0% { transform: scale(1); text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+            50% { transform: scale(1.02); text-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+            100% { transform: scale(1); text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        }
+
+        @keyframes gold-pulse {
+            0% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+            50% { transform: scale(1.02); text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); }
+            100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+        }
+
+        .trend-indicator {
+            color: var(--gold-primary); font-size: 1.2rem; margin-left: 10px;
+        }
+
+        /* Stock Bar (Progress) */
+        .stock-bar-container {
+            width: 100%; height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .stock-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-primary), #fff);
+            width: 0%;
+            border-radius: 3px;
+            transition: width 1s ease-out; 
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        .big-percent-wrapper {
+            display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+            justify-content: center; /* Center align percentage */
+            width: 100%;
         }
         
         .percent-sym { 
@@ -248,37 +272,6 @@
         
         .plus-sign {
             color: var(--gold-primary); font-family: var(--font-head); font-size: 2rem;
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes pulse-gold-text {
-            0% { transform: scale(1); text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-            50% { transform: scale(1.02); text-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
-            100% { transform: scale(1); text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
-        }
-
-        @keyframes gold-pulse {
-            0% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-            50% { transform: scale(1.02); text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); }
-            100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
-        }
-
-        /* --- STOCK BAR --- */
-        .stock-bar-container {
-            width: 100%; height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 15px;
-        }
-        
-        .stock-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--gold-primary), #fff);
-            width: 0%;
-            border-radius: 3px;
-            transition: width 1s ease-out; 
-            box-shadow: 0 0 10px var(--gold-glow);
         }
 
         /* --- PORTRAIT --- */
@@ -336,7 +329,10 @@
             font-size: 5.5vw;
             line-height: 1.1;
             color: var(--gold-primary);
-            text-shadow: 0 2px 0 #8a6e15, 0 4px 0 #5c490e, 0 0 40px rgba(212, 175, 55, 0.4);
+            text-shadow: 
+                0 2px 0 #8a6e15,
+                0 4px 0 #5c490e,
+                0 0 40px rgba(212, 175, 55, 0.4);
         }
 
         /* --- ANIMATION UTILS --- */
@@ -355,9 +351,9 @@
                 flex-direction: column-reverse; 
             }
             .photo-wrapper { width: 280px; margin: 0 auto; }
-            .label-gold { font-size: 2.2rem; margin-top: 20px; }
+            .label-gold { font-size: 2.2rem; margin-top: 20px; border-bottom: none; }
             .winner-name { font-size: 1.8rem; }
-            .stats-box { max-width: 100%; }
+            .stats-box { max-width: 100%; text-align: left; }
             .hero-title { font-size: 3rem; }
         }
     </style>
@@ -384,12 +380,12 @@
 
     <div class="slides-wrapper">
 
-        <!-- 1. INTRO -->
+        <!-- 1. INTRO (STABILIZED) -->
         <div class="slide-container active layout-center">
             <div class="intro-date-text anim-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
             <h1 class="hero-title anim-text">REWARD & RECOGNITION</h1>
             <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
-            <p class="anim-text" style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.1rem; font-weight: bold;">QUARTERLY PERFORMANCE REPORT</p>
+            <p style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.1rem; font-weight: bold;">QUARTERLY PERFORMANCE REPORT</p>
             <p class="anim-text" style="letter-spacing: 3px; color: #fff; font-size: 2rem; margin-top: 40px; font-family: var(--font-head); text-transform: uppercase; font-weight: 700;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
         </div>
 
@@ -750,7 +746,7 @@
         <!-- 36. CATEGORY: TOP BD -->
         <div class="slide-container layout-center">
             <h1 class="label-gold" style="border:none; font-size:4rem;">LEADING REVENUE CONTRIBUTOR</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
         </div>
 
         <!-- 37. SARITA (WINNER) -->
@@ -770,7 +766,7 @@
         <!-- 38. CATEGORY: TOP TL -->
         <div class="slide-container layout-center">
             <h1 class="label-gold" style="border:none; font-size:4rem;">TOP TEAM LEADER</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">TEAM PERFORMANCE RANKING</p>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">TEAM PERFORMANCE RANKING</p>
         </div>
 
         <!-- 39. KARAN -->
@@ -787,21 +783,7 @@
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
         </div>
 
-        <!-- 40. PUNYASHREE -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP TEAM LEADER</div>
-                <h1 class="winner-name anim-text">PUNYASHREE M</h1>
-                <div class="designation anim-text">TEAM LEADER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,10,375</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 9,03,793</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="49.92">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 49%;"></div></div></div>
-                </div>
-            </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=19XYbZaa3VJlYvwutQoz0RrZnFQKZdkqY&sz=w1000"></div></div></div>
-        </div>
-
-        <!-- 41. TOP MANAGER -->
+        <!-- 40. TOP MANAGER -->
         <div class="slide-container layout-split">
             <div class="content-panel">
                 <div class="label-gold anim-text">TOP MANAGER</div>
@@ -815,7 +797,7 @@
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div></div>
         </div>
 
-        <!-- 42. CLOSING -->
+        <!-- 41. CLOSING -->
         <div class="slide-container layout-center">
             <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
             <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
@@ -825,7 +807,7 @@
     </div>
 
     <!-- UI: Navigation and Counter -->
-    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">42</span></div>
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
     
     <div class="nav-controls">
         <button class="nav-btn" onclick="changeSlide(-1)">←</button>
@@ -844,47 +826,54 @@
 
         // Particle Wave
         const geometry = new THREE.BufferGeometry();
-        const count = 1200;
+        const count = 1500; // Increased count for denser look
         const posArray = new Float32Array(count * 3);
         
         for(let i = 0; i < count * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 60;
+            posArray[i] = (Math.random() - 0.5) * 60; // Wider spread
         }
         
         geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         const material = new THREE.PointsMaterial({
-            size: 0.05,
-            color: 0xD4AF37,
+            size: 0.04,
+            color: 0xD4AF37, // Gold Particles
             transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
+            opacity: 0.7,
+            sizeAttenuation: true
         });
         
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
-        
-        // Connect Lines
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.15 });
-        const linesGeometry = new THREE.BufferGeometry();
-        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
-        scene.add(linesMesh);
+        camera.position.z = 20;
 
-        camera.position.z = 25;
-        let mouseX = 0, mouseY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX / window.innerWidth - 0.5;
-            mouseY = e.clientY / window.innerHeight - 0.5;
+        // Mouse Interaction (Subtle Parallax)
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
         });
+
+        // Animation Clock
+        const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
-            particles.rotation.y += 0.001;
-            particles.rotation.x += 0.0005;
-            linesMesh.rotation.copy(particles.rotation);
             
-            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
+            const elapsedTime = clock.getElapsedTime();
+
+            // 1. Continuous Rotation (The "Alive" movement)
+            particles.rotation.y = elapsedTime * 0.05; // Smooth constant spin
+            particles.rotation.x = elapsedTime * 0.02; // Slight tilt spin
+
+            // 2. Cinematic Floating Camera (The "7D" feel)
+            // Moves the camera in a gentle wave pattern
+            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05; // Gentle mouse follow
+            camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
+            
+            // Add automatic drift
+            camera.position.x += Math.sin(elapsedTime * 0.3) * 0.02;
+            camera.position.y += Math.cos(elapsedTime * 0.2) * 0.02;
             camera.lookAt(scene.position);
             
             renderer.render(scene, camera);
@@ -897,7 +886,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Presentation Logic
+        // --- Slide Logic ---
         const slides = document.querySelectorAll('.slide-container');
         const currEl = document.getElementById('curr-idx');
         const totalEl = document.getElementById('total-idx');
