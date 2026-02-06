@@ -386,7 +386,7 @@
     <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶</button>
     
     <!-- Slide Counter (HIDDEN) -->
-    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
 
     <div class="nav-controls">
         <button class="nav-btn" onclick="changeSlide(-1)">←</button>
@@ -797,6 +797,12 @@
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
         </div>
+        
+        <!-- NEW SLIDE: TOP MANAGER CATEGORY -->
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP MANAGER</h1>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">OVERALL PERFORMANCE</p>
+        </div>
 
         <!-- 40. TOP MANAGER -->
         <div class="slide-container layout-split">
@@ -814,15 +820,15 @@
 
         <!-- 41. CLOSING -->
         <div class="slide-container layout-center">
-            <h1 class="hero-title anim-text" style="font-size:4rem;">THANK YOU</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 2.5rem; font-weight: 700;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
+            <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
             <div style="margin-top: 60px; font-family: var(--font-head); color: #fff; font-size: 2rem; letter-spacing: 2px;" class="anim-text">ONEPAPER RESEARCH ANALYSTS PVT LTD</div>
         </div>
 
     </div>
 
     <!-- UI: Navigation and Counter -->
-    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
     
     <div class="nav-controls">
         <button class="nav-btn" onclick="changeSlide(-1)">←</button>
@@ -859,13 +865,6 @@
         
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
-        
-        // Connect Lines
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.15 });
-        const linesGeometry = new THREE.BufferGeometry();
-        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
-        scene.add(linesMesh);
-
         camera.position.z = 20;
 
         // Mouse Interaction (Subtle Parallax)
