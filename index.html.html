@@ -3,228 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OnePaper Rewards - Executive Suite</title>
-    <!-- Importing Libraries -->
+    <title>OnePaper Rewards - Premium Edition</title>
+    
+    <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Cinzel (Luxury), Manrope (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Manrope:wght@300;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-dark: #050505;
-            --glass-surface: rgba(16, 20, 30, 0.85); /* Increased opacity for better readability */
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --gold-accent: #D4AF37; 
-            --gold-glow: rgba(212, 175, 55, 0.3);
-            --text-primary: #FFFFFF;
-            --text-secondary: #A0A0A0;
-            --positive-green: #00ff88;
-            --trend-up: #00ff88;
+            /* Premium Palette: Black & Gold */
+            --bg-deep: #000000;
+            --panel-bg: rgba(10, 10, 12, 0.7);
             
-            --font-heading: 'Cinzel', serif;
-            --font-body: 'Inter', sans-serif;
-            --font-tech: 'Rajdhani', sans-serif;
+            --gold-primary: #D4AF37;
+            --gold-light: #F8F1D2;
+            --gold-dim: #8A7128;
+            
+            --stock-green: #00ff9d; /* Bright ticker green */
+            
+            --text-primary: #FFFFFF;
+            --text-muted: #888888;
+            
+            --font-head: 'Cinzel', serif;
+            --font-body: 'Manrope', sans-serif;
+            --font-ticker: 'Share Tech Mono', monospace; /* The Stock Market Font */
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            margin: 0; padding: 0;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-primary);
             font-family: var(--font-body);
             overflow: hidden;
             height: 100vh; width: 100vw;
         }
 
-        /* --- IMMERSIVE BACKGROUND --- */
-        #canvas-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; /* Lowest layer */
-            background: radial-gradient(circle at 50% 50%, #11151c 0%, #000000 100%);
-        }
-
-        .noise-overlay {
+        /* --- BACKGROUND --- */
+        #canvas-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-            z-index: 2; pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1; pointer-events: none;
+            opacity: 0.3;
         }
 
-        /* --- LOGO & FULLSCREEN UI --- */
-        .company-logo-fixed {
+        /* --- UI & LAYOUT --- */
+        .company-logo {
             position: fixed;
-            top: 30px;
-            left: 30px;
-            width: 120px;
-            height: auto;
-            z-index: 1000; /* Top layer */
-            filter: invert(1) grayscale(1) brightness(1.5); 
-            mix-blend-mode: screen; 
-            opacity: 0.9;
+            top: 30px; left: 30px;
+            width: 150px;
+            z-index: 1000;
+            /* LOGO FIX: Invert colors to turn white background to black */
+            filter: invert(1);
+            mix-blend-mode: screen; /* Ensures black background blends if needed, though invert usually handles it */
         }
 
         .fullscreen-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            z-index: 1000; /* Top layer */
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--glass-border);
-            color: var(--gold-accent);
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
+            position: fixed; top: 30px; right: 30px;
+            width: 40px; height: 40px;
+            border: 1px solid var(--gold-primary);
+            background: transparent; color: var(--gold-primary);
+            border-radius: 50%; cursor: pointer;
+            z-index: 1000; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .fullscreen-btn:hover { background: var(--gold-primary); color: #000; }
+
+        .slide-counter {
+            position: fixed; top: 42px; right: 90px;
+            font-family: var(--font-ticker); color: var(--gold-primary);
+            font-size: 1rem; letter-spacing: 2px; z-index: 1000;
+        }
+
+        .nav-controls {
+            position: fixed; bottom: 30px; right: 30px;
+            display: flex; gap: 15px; z-index: 1000;
+        }
+        
+        .nav-btn {
+            width: 50px; height: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%; background: rgba(0,0,0,0.5);
+            color: #fff; font-size: 1.2rem; cursor: pointer;
+            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .nav-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+
+        /* --- SLIDES --- */
+        .slides-wrapper {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+        }
+
+        .slide-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.6s ease-in-out;
+            padding: 100px 40px 40px 40px; 
+        }
+        
+        .slide-container.active {
+            opacity: 1; visibility: visible; z-index: 20;
+        }
+
+        /* --- GRID SYSTEM --- */
+        .layout-split {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr; 
+            width: 100%; max-width: 1300px;
+            gap: 50px;
             align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-        .fullscreen-btn:hover {
-            background: var(--gold-accent);
-            color: #000;
         }
 
-        /* --- MAIN LAYOUT --- */
-        #app-root {
-            position: relative; 
-            z-index: 10; /* Above background */
-            width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            padding: 20px;
+        .layout-center {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            max-width: 1000px;
         }
 
-        /* --- SLIDE ARCHITECTURE --- */
-        .slide {
-            position: absolute;
-            width: 100%; max-width: 1200px;
-            height: auto; min-height: 70vh;
-            display: flex;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-            pointer-events: none;
-            
-            background: var(--glass-surface);
-            backdrop-filter: blur(25px); /* Strong blur for text legibility */
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 4px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            visibility: hidden; /* Fix for "not showing" - hide until active */
+        /* --- CONTENT STYLING --- */
+        
+        .label-gold {
+            font-family: var(--font-head);
+            font-size: clamp(2.2rem, 3.5vw, 4rem); 
+            line-height: 1.1;
+            color: var(--gold-primary);
+            text-transform: uppercase; 
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            display: block;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 10px;
+            width: fit-content;
         }
-
-        .slide.active {
-            opacity: 1; transform: translateY(0);
-            pointer-events: auto; z-index: 50; /* Active slide on top */
-            visibility: visible;
-        }
-
-        /* Top Accent Bar */
-        .slide::before {
-            content: ''; position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
-            box-shadow: 0 0 15px var(--gold-glow);
-        }
-
-        /* Content Areas */
-        .content-left {
-            flex: 1.3;
-            padding: 50px 60px;
-            display: flex; flex-direction: column; justify-content: center;
-            border-right: 1px solid var(--glass-border);
-        }
-
-        .content-right {
-            flex: 0.8;
-            padding: 40px;
-            display: flex; justify-content: center; align-items: center;
-            background: rgba(0,0,0,0.2);
-            position: relative; overflow: hidden;
-        }
-
-        /* Intro/Title Layout */
-        .slide.center-layout {
-            flex-direction: column; text-align: center; justify-content: center;
-            padding: 60px; background: transparent; border: none; box-shadow: none; backdrop-filter: none;
-        }
-        .slide.center-layout::before { display: none; }
-
-        /* Typography */
-        h1 {
-            font-family: var(--font-heading); font-size: 4.5rem;
-            color: var(--text-primary); margin: 0; letter-spacing: -2px; line-height: 1;
-            /* Static gradient for stability */
-            background: linear-gradient(135deg, #fff 20%, #ccc 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        h2 {
-            font-family: var(--font-body); font-size: 0.9rem;
-            text-transform: uppercase; letter-spacing: 4px;
-            color: var(--gold-accent); margin-bottom: 15px;
-            display: flex; align-items: center; gap: 15px;
-        }
-        h2::before { content: ''; display: block; width: 40px; height: 1px; background: var(--gold-accent); }
 
         .winner-name {
-            font-family: var(--font-heading); font-size: 3.2rem;
-            color: #fff; margin: 0 0 5px 0;
-            line-height: 1.1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            font-family: var(--font-body);
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem); 
+            font-weight: 700;
+            color: #fff; 
+            margin-bottom: 5px; 
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .designation {
-            font-family: var(--font-body); font-size: 0.9rem;
-            color: var(--text-secondary); font-weight: 300;
-            margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;
+            font-family: var(--font-body); 
+            font-size: 0.9rem;
+            color: var(--text-muted); 
+            letter-spacing: 2px;
+            text-transform: uppercase; 
+            margin-bottom: 30px;
+            font-weight: 400;
         }
 
-        /* --- STOCK MARKET VISUALIZATIONS --- */
-        .financial-card {
-            margin-top: auto;
-            border-top: 1px solid var(--glass-border);
-            padding-top: 25px;
+        /* --- STATS BOX (RESTORED PREMIUM LOOK) --- */
+        .stats-box {
+            width: 100%;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10,10,10,0.5);
+            padding: 20px;
+            display: flex; flex-direction: column; gap: 15px;
+            border-left: 3px solid var(--gold-primary);
         }
 
-        .stock-row {
+        .stat-row {
             display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 10px;
         }
 
-        .stock-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .stock-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-body); }
         
-        /* NEW STYLES FOR POPPING NUMBERS */
+        /* Restored Font to Cinzel (Serif) for Premium Look */
         .target-display {
-            font-size: 1.2rem; font-weight: 500;
-            color: #8b949e; 
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem; font-weight: 500;
+            color: #ccc; 
+            font-family: var(--font-head); 
         }
 
         .achieved-display {
-            font-size: 1.8rem; font-weight: 800;
-            color: var(--positive-green);
-            font-family: 'JetBrains Mono', monospace;
-            text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            font-size: 1.8rem; font-weight: 700;
+            color: var(--gold-primary); /* Gold Color */
+            font-family: var(--font-head);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); /* Gold Glow */
+            animation: pulse-gold-text 2s infinite ease-in-out;
         }
 
         .stock-percent { 
-            font-size: 4rem; font-family: var(--font-heading); 
-            color: var(--gold-accent); line-height: 1; 
-            text-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+            font-size: 4.5rem; font-family: var(--font-head); 
+            color: var(--gold-primary); line-height: 1; 
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+            animation: gold-pulse 3s infinite ease-in-out;
         }
         
+        @keyframes pulse-gold-text {
+            0% { transform: scale(1); text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+            50% { transform: scale(1.02); text-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+            100% { transform: scale(1); text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+        }
+
+        @keyframes gold-pulse {
+            0% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+            50% { transform: scale(1.02); text-shadow: 0 0 50px rgba(212, 175, 55, 0.6); }
+            100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
+        }
+
         .trend-indicator {
-            color: var(--positive-green); font-size: 1.2rem; margin-left: 10px;
+            color: var(--gold-primary); font-size: 1.2rem; margin-left: 10px;
         }
 
         /* Stock Bar (Progress) */
         .stock-bar-container {
-            width: 100%; height: 6px;
+            width: 100%; height: 4px;
             background: rgba(255,255,255,0.1);
             border-radius: 3px;
             overflow: hidden;
@@ -234,16 +243,30 @@
         
         .stock-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--gold-accent), #fff);
+            background: linear-gradient(90deg, var(--gold-primary), #fff);
             width: 0%;
             border-radius: 3px;
-            transition: width 1s ease-out; /* Smoother, simpler transition */
+            transition: width 1s ease-out; 
             box-shadow: 0 0 10px var(--gold-glow);
         }
 
-        .stock-meta {
-            display: flex; justify-content: space-between; margin-top: 8px;
-            font-size: 0.7rem; color: #666; font-family: 'JetBrains Mono', monospace;
+        .big-percent-wrapper {
+            display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
+        }
+        
+        .percent-sym { 
+            font-size: 2.5rem; color: var(--gold-dim); 
+            font-family: var(--font-head); 
+        }
+
+        .trend-up {
+            font-size: 2rem; color: var(--gold-primary); margin-right: 10px;
+        }
+        
+        .plus-sign {
+            color: var(--gold-primary); font-family: var(--font-head); font-size: 2rem;
         }
 
         /* --- PORTRAIT --- */
@@ -293,10 +316,7 @@
         }
         .nav-btn:hover { background: var(--gold-accent); color: #000; border-color: var(--gold-accent); }
 
-        .progress-indicator { position: fixed; bottom: 35px; left: 40px; font-size: 0.8rem; color: #666; letter-spacing: 2px; }
-
-        /* --- STABLE INTRO TEXT STYLE --- */
-        /* Replaced animation with static premium style to fix blinking */
+        /* --- INTRO TEXT STYLE --- */
         .intro-date-text {
             font-size: 1.2rem;
             text-transform: uppercase;
@@ -312,8 +332,7 @@
         .hero-title {
             font-size: 5.5vw;
             line-height: 1.1;
-            color: #D4AF37; /* Solid Gold Color */
-            /* Static 3D effect using text-shadow */
+            color: var(--gold-primary);
             text-shadow: 
                 0 2px 0 #8a6e15,
                 0 4px 0 #5c490e,
@@ -340,44 +359,16 @@
             width: 100%;
             height: 100%;
         }
-        
-        .profile-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .profile-card h3 {
-            color: var(--neon-gold);
-            font-size: 1.5rem;
-            margin: 10px 0;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-        }
-        
-        .profile-card .rank-badge {
-            background: var(--neon-gold);
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-family: 'JetBrains Mono';
-            margin-bottom: 15px;
-        }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container"></div>
-    <div class="noise-overlay"></div>
+    <div id="canvas-wrapper"></div>
+    <div class="grid-overlay"></div>
+    <div class="grain"></div>
 
     <!-- Company Logo -->
-    <img src="https://drive.google.com/thumbnail?id=1OLed4fFngR-yUPNwI-CRtMVh6EuZ9lC8&sz=w200" alt="Logo" class="company-logo-fixed">
+    <img src="https://drive.google.com/thumbnail?id=1OLed4fFngR-yUPNwI-CRtMVh6EuZ9lC8&sz=w200" alt="Logo" class="company-logo">
 
     <!-- Fullscreen Toggle -->
     <button class="fullscreen-btn" onclick="toggleFullScreen()" title="Full Screen">⛶</button>
@@ -385,605 +376,586 @@
     <div id="app-root">
         
         <!-- 1. INTRO (STABILIZED) -->
-        <div class="slide center-layout active">
+        <div class="slide-container active layout-center">
             <div class="intro-date-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
             <h1 class="hero-title">REWARD & RECOGNITION</h1>
-            <div style="width: 80px; height: 3px; background: var(--gold-accent); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
-            <p style="letter-spacing: 3px; color: var(--gold-accent); font-size: 1.1rem; font-weight: bold;">3 MONTHS PERFORMANCE</p>
-            <p style="letter-spacing: 2px; color: #666; font-size: 0.9rem; margin-top: 20px;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
+            <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
+            <p style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.1rem; font-weight: bold;">QUARTERLY PERFORMANCE REPORT</p>
+            <!-- BIGGER COMPANY NAME -->
+            <p style="letter-spacing: 3px; color: #fff; font-size: 2rem; margin-top: 40px; font-family: var(--font-head); text-transform: uppercase; font-weight: 700;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
         </div>
 
         <!-- 2. CATEGORY: RM COLLECTIVE -->
-        <div class="slide center-layout">
-            <h1 style="font-size: 4rem; color: var(--gold-accent);">TOP INDIVIDUAL PERFORMERS</h1>
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP INDIVIDUAL PERFORMERS</h1>
             <p style="color: #888; margin-top: 15px; letter-spacing: 2px;">RELATIONSHIP MANAGERS</p>
         </div>
 
         <!-- 3. ABINESH R -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">ABINESH R</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
                 
-                <div class="financial-card">
-                    <div class="stock-row">
-                        <div>
-                            <div class="stock-label">Performance</div>
-                            <div class="stock-percent"><span class="counter" data-target="644.74">0</span>% <span class="trend-indicator">▲</span></div>
-                        </div>
+                <div class="stats-box">
+                    <div class="stat-row">
+                        <div><span class="stock-label">Target</span><br><span class="target-display">₹ 1,49,400</span></div>
+                        <div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 9,63,236</span></div>
                     </div>
-                    <div class="stock-row" style="margin-top: 20px;">
-                        <div>
-                            <div class="stock-label">Target</div>
-                            <div class="target-display">₹ 1,49,400</div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div class="stock-label">Achieved</div>
-                            <div class="achieved-display">₹ 9,63,236</div>
-                        </div>
+                    <div class="big-percent-wrapper">
+                        <span class="stock-label" style="align-self: center; margin-right: 10px;">GROWTH</span>
+                        <span class="trend-up">▲</span>
+                        <span class="plus-sign">+</span><div class="stock-percent count-up" data-val="644.74">0</div><span class="percent-sym">%</span>
                     </div>
-                    <!-- Stock Bar -->
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%;"></div></div>
-                    <div class="stock-meta"><span>VOL: HIGH</span><span>RATING: A++</span></div>
                 </div>
             </div>
-            <div class="content-right">
-                <div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Abinesh'"></div>
-            </div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000" onerror="this.src='https://placehold.co/400x500/000/FFF?text=Abinesh'"></div></div>
         </div>
 
         <!-- 4. ACHUKATLA -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">ACHUKATLA JABEEULLA</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="294.09">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 65,813</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 1,93,551</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 65,813</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,93,551</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="294.09">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 85%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1WNbCp7ynC147i5pWo5uSFXaPt7CMN0-z&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Achukatla'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1WNbCp7ynC147i5pWo5uSFXaPt7CMN0-z&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Achukatla'"></div></div>
         </div>
 
-        <!-- 5. LAVANYA B -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 5. LAVANYA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">LAVANYA B</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="271.23">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 12,54,449</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,54,449</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="271.23">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 80%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1Cj9G1mbk8FEAtwgrJ7Oy05Mo0T3Fw6Zh&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Lavanya'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1Cj9G1mbk8FEAtwgrJ7Oy05Mo0T3Fw6Zh&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Lavanya'"></div></div>
         </div>
 
-        <!-- 6. ROSHAN XV -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 6. ROSHAN -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">ROSHAN XV</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="259.64">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 12,85,197</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,85,197</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="259.64">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 78%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1zqJ1Eo-ULqFR-c6JK8b7SpotF4R-9v-E&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Roshan'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1zqJ1Eo-ULqFR-c6JK8b7SpotF4R-9v-E&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Roshan'"></div></div>
         </div>
 
-        <!-- 7. SARITA PATTANAYAK -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 7. SARITA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">SARITA PATTANAYAK</div>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="212.07">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 6,75,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 14,31,456</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sarita'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sarita'"></div></div>
         </div>
 
-        <!-- 8. SNEHA M -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 8. SNEHA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">SNEHA M</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="189.82">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 2,70,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,12,501</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 2,70,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,12,501</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="189.82">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1HVvAYuzaLlLv3jKZ_rdnlTjOLJnbHHvq&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sneha'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1HVvAYuzaLlLv3jKZ_rdnlTjOLJnbHHvq&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sneha'"></div></div>
         </div>
 
-        <!-- 9. LAKSHYA R -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 9. LAKSHYA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">LAKSHYA R</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="181.83">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 3,12,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,68,221</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,68,221</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="181.83">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 63%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1A_ucW6VkvaBWlafhrKFrlpv-zPQT1GQ-&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Lakshya'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1A_ucW6VkvaBWlafhrKFrlpv-zPQT1GQ-&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Lakshya'"></div></div>
         </div>
 
-        <!-- 10. ANJALI K -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 10. ANJALI -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">ANJALI K</div>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="168.88">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 6,00,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 10,13,297</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 6,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 10,13,297</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="168.88">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 60%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=169Xf9taWnYtBVcDSX7f5R7qieqIGmn2K&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Anjali'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=169Xf9taWnYtBVcDSX7f5R7qieqIGmn2K&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Anjali'"></div></div>
         </div>
 
-        <!-- 11. SONY THOMAS -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 11. SONY -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">SONY THOMAS</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="146.88">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 6,79,314</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,79,314</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="146.88">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1sugklwA9a8D9_-6vSsLHkGG33cFRnjJv&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sony'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1sugklwA9a8D9_-6vSsLHkGG33cFRnjJv&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sony'"></div></div>
         </div>
 
-        <!-- 12. SHRAVANTH V -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 12. SHRAVANTH -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">SHRAVANTH V</div>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="141.22">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 6,99,045</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,99,045</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="141.22">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 50%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=19lAfaXzojQat1Rcnw_ezKow8UcR5c4VS&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Shravanth'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=19lAfaXzojQat1Rcnw_ezKow8UcR5c4VS&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Shravanth'"></div></div>
         </div>
 
-        <!-- 13. MANJUNATH SHET -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 13. MANJUNATH -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">MANJUNATH SHET</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="137.44">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 46,059</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 63,305</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 46,059</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 63,305</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="137.44">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 48%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1lRj3unffvso4vKS7577UPJMmEWZBNqoc&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Manjunath'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1lRj3unffvso4vKS7577UPJMmEWZBNqoc&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Manjunath'"></div></div>
         </div>
 
-        <!-- 14. SHREEJISHNU T -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 14. SHREEJISHNU -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">SHREEJISHNU T</div>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="132.84">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,30,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,71,229</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,71,229</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="132.84">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 45%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=16xTSE6MnhkFdmQtaTwc-GtRH1lCOiO5O&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=ShreeJishnu'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=16xTSE6MnhkFdmQtaTwc-GtRH1lCOiO5O&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=ShreeJishnu'"></div></div>
         </div>
 
-        <!-- 15. NETHRA M V -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 15. NETHRA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">NETHRA M V</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="131.48">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 3,30,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 4,33,884</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 3,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 4,33,884</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="131.48">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 44%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1EXfpVwaY4hpRjn89MbZHJtFMu9JZwo9V&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Nethra'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1EXfpVwaY4hpRjn89MbZHJtFMu9JZwo9V&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Nethra'"></div></div>
         </div>
 
-        <!-- 16. PRATIBHA JS -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 16. PRATIBHA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">PRATIBHA JS</div>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="126.27">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 90,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 1,13,644</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 90,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,13,644</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="126.27">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1E6nSL9omjhG6KVPG7r-THKfy4gHLZn-t&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Pratibha'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1E6nSL9omjhG6KVPG7r-THKfy4gHLZn-t&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Pratibha'"></div></div>
         </div>
 
-        <!-- 17. CHETHANA N -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 17. CHETHANA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">CHETHANA N</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="125.56">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,62,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,80,738</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,80,738</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="125.56">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1LwYxFL2e8xT2IOXDuVUCKupyKlrQTYIc&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Chethana'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1LwYxFL2e8xT2IOXDuVUCKupyKlrQTYIc&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Chethana'"></div></div>
         </div>
 
-        <!-- 18. RAVI TIWARI -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 18. RAVI -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">RAVI TIWARI</div>
                 <div class="designation">RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="118.99">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 3,12,500</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 3,71,854</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 3,71,854</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="118.99">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 38%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1Fj-womU2YE8ycFXaDtEGkyQhtXxlNSha&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Ravi'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1Fj-womU2YE8ycFXaDtEGkyQhtXxlNSha&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Ravi'"></div></div>
         </div>
 
-        <!-- 19. SAGAR CHOUBEY -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TOP INDIVIDUAL PERFORMER</h2>
+        <!-- 19. SAGAR -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP INDIVIDUAL PERFORMER</div>
                 <div class="winner-name">SAGAR CHOUBEY</div>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="116.02">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 4,95,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 5,74,323</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,74,323</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="116.02">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 37%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1hD5TUxfgUs1eHH3eUy3Y_Ioa8WC7p2lB&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sagar'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1hD5TUxfgUs1eHH3eUy3Y_Ioa8WC7p2lB&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Sagar'"></div></div>
         </div>
 
-        <!-- 20. CATEGORY: LEADERS TEAM -->
-        <div class="slide center-layout">
-            <h1>TEAM TARGET ACHIEVERS</h1>
+        <!-- 20. CATEGORY: LEADERS COLLECTIVE -->
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
         </div>
 
-        <!-- 21. KARAN KUMAR (Collective) -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TEAM TARGET ACHIEVERS</h2>
+        <!-- 21. KARAN -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TEAM TARGET ACHIEVERS</div>
                 <div class="winner-name">KARAN KUMAR</div>
                 <div class="designation">TEAM LEADER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="154.90">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 18,95,026</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 29,34,533</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.90">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Karan'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Karan'"></div></div>
         </div>
 
-        <!-- 22. MEGHNA SINGH (Collective) -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>TEAM TARGET ACHIEVERS</h2>
+        <!-- 22. MEGHNA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TEAM TARGET ACHIEVERS</div>
                 <div class="winner-name">MEGHNA SINGH</div>
                 <div class="designation">MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="128.80">0</span>% <span class="trend-indicator">▲</span></div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 45,00,000</div></div><div style="text-align: right;"><div class="stock-label">Achieved</div><div class="achieved-display">₹ 57,95,049</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.80">0</div><span class="percent-sym">%</span></div>
                     <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Meghna'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Meghna'"></div></div>
         </div>
 
         <!-- 23. CATEGORY: RISING STAR -->
-        <div class="slide center-layout">
-            <h1 style="color: var(--gold-accent);">RISING STAR</h1>
-            <p style="color: var(--text-secondary); margin-top: 20px;">EXCEPTIONAL BREAKOUT PERFORMANCE</p>
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">RISING STAR</h1>
+            <p style="color: #888; margin-top: 15px; letter-spacing: 2px;">EXCEPTIONAL BREAKOUT PERFORMANCE</p>
         </div>
 
-        <!-- 24. ABINESH R (RISING STAR) -->
-        <div class="slide">
-            <div class="content-left">
-                <h2 style="color: var(--gold-accent);">THE WINNER</h2>
-                <div class="winner-name" style="color: var(--gold-accent); -webkit-text-fill-color: var(--gold-accent);">ABINESH R</div>
-                <div class="designation" style="color: #fff;">RECORD BREAKING ACHIEVEMENT</div>
-                <div class="financial-card" style="border-color: var(--gold-accent);">
-                    <div class="stock-row"><div><div class="stock-label">Growth</div><div class="stock-percent" style="color: #fff;"><span class="counter" data-target="644.74">0</span>% 🚀</div></div></div>
-                    <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%; background: #fff; box-shadow: 0 0 20px #fff;"></div></div>
+        <!-- 24. ABINESH -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">THE WINNER</div>
+                <div class="winner-name" style="color:var(--gold-primary);">ABINESH R</div>
+                <div class="designation" style="color:#fff; border:none; padding:0;">RECORD BREAKING ACHIEVEMENT</div>
+                <div class="stats-box" style="border-top:none;">
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="644.74" style="font-size:7rem;">0</div><span class="percent-sym">%</span></div>
+                    <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%; background: #fff;"></div></div>
                 </div>
             </div>
-            <div class="content-right">
-                <div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Abinesh'"></div>
-            </div>
+            <div class="photo-wrapper"><div class="portrait-frame" style="border-color:var(--gold-primary);"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Abinesh'"></div></div>
         </div>
 
-        <!-- 25. CATEGORY: LESS ATTRITION -->
-        <div class="slide center-layout">
-            <h1>LESS ATTRITION TEAM</h1>
-            <p style="color: var(--text-secondary); margin-top: 20px;">TEAM STABILITY AWARD</p>
+        <!-- 25. CATEGORY: ATTRITION -->
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">LESS ATTRITION TEAM</h1>
+            <p style="color: #888; margin-top: 15px; letter-spacing: 2px;">TEAM STABILITY AWARD</p>
         </div>
 
         <!-- 26. DIKSHITA -->
-        <div class="slide center-layout">
-            <div class="portrait-frame" style="width: 300px; height: 300px; margin-bottom: 30px;">
-                <img src="https://drive.google.com/thumbnail?id=1RjO5OkXShjzvWdTHhp0LqUjtOg1fAiUo&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Dikshita'">
+        <div class="slide-container layout-center">
+            <div class="photo-wrapper" style="width:300px; height:300px; border-radius:50%; margin-bottom:30px; overflow:hidden; border:2px solid var(--gold-primary);">
+                <img src="https://drive.google.com/thumbnail?id=1RjO5OkXShjzvWdTHhp0LqUjtOg1fAiUo&sz=w1000" style="width:100%; height:100%; object-fit:cover;">
             </div>
-            <h1 style="font-size: 3.5rem;">DIKSHITA DAYANAND POOJARI</h1>
-            <p style="color: var(--text-secondary); margin-top: 15px;">MANAGER</p>
+            <h1 class="winner-name">DIKSHITA DAYANAND POOJARI</h1>
+            <div class="designation" style="border:none;">MANAGER</div>
         </div>
 
         <!-- 27. CATEGORY: SUPPORT -->
-        <div class="slide center-layout">
-            <h1>SPECIAL RECOGNITION AWARD</h1>
-            <p style="color: var(--text-secondary); margin-top: 20px;">SUPPORT & HR</p>
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">SPECIAL RECOGNITION AWARD</h1>
+            <p style="color: #888; margin-top: 15px; letter-spacing: 2px;">SUPPORT & HR</p>
         </div>
 
-        <!-- 28-34. SUPPORT MEMBERS -->
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">SHAIK NAZMA BEGUM</div><div class="designation">OPERATION MANAGER</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN SUPPORT</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">SANJAY SRINIVAS</div><div class="designation">SR. OPERATION EXECUTIVE</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN SUPPORT</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div>
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">ABHISHEK CHOWDHURY</div><div class="designation">OPERATION EXECUTIVE</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN SUPPORT</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1OlyjrHlM5oz_eiSTrFN5hnud3eYxwlKe&sz=w1000"></div></div></div>
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">ANITHA V</div><div class="designation">OPERATION EXECUTIVE</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN SUPPORT</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=18J2e0EzosmDT_qKgDol6tDB8VHxBjZop&sz=w1000"></div></div></div>
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">SAKSHAM SHARMA</div><div class="designation">COMPLIANCE MANAGER</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN COMPLIANCE</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1Q8t-MnxEekx1KvBZzswb_fy-lBt7aBZF&sz=w1000"></div></div></div>
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">PRATIK PRASHANT SHINDE</div><div class="designation">RESEARCH ANALYST</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN RESEARCH</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1-1qVlE5TI5DqwDCfnScfd9yRWT3w1XVt&sz=w1000"></div></div></div>
-        <div class="slide"><div class="content-left"><h2>SPECIAL RECOGNITION AWARD</h2><div class="winner-name">MIR JULEKHA PARVIN</div><div class="designation">SR. OPERATION EXECUTIVE</div><div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN SUPPORT</div></div></div><div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1joJndSXSug1KcOQU1NRGGqVPDEbqqPmu&sz=w1000"></div></div></div>
+        <!-- 28-34 SUPPORT -->
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">SHAIK NAZMA BEGUM</h1><div class="designation">OPERATION MANAGER</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">SANJAY SRINIVAS</h1><div class="designation">SR. OPERATION EXECUTIVE</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">ABHISHEK CHOWDHURY</h1><div class="designation">OPERATION EXECUTIVE</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1OlyjrHlM5oz_eiSTrFN5hnud3eYxwlKe&sz=w1000"></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">ANITHA V</h1><div class="designation">OPERATION EXECUTIVE</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=18J2e0EzosmDT_qKgDol6tDB8VHxBjZop&sz=w1000"></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">SAKSHAM SHARMA</h1><div class="designation">COMPLIANCE MANAGER</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN COMPLIANCE</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1Q8t-MnxEekx1KvBZzswb_fy-lBt7aBZF&sz=w1000"></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">PRATIK PRASHANT SHINDE</h1><div class="designation">RESEARCH ANALYST</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN RESEARCH</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1-1qVlE5TI5DqwDCfnScfd9yRWT3w1XVt&sz=w1000"></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name">MIR JULEKHA PARVIN</h1><div class="designation">SR. OPERATION EXECUTIVE</div><div class="stats-box"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1joJndSXSug1KcOQU1NRGGqVPDEbqqPmu&sz=w1000"></div></div></div>
 
-        <!-- 35. HR -->
-        <div class="slide">
-            <div class="content-left">
-                <h2>SPECIAL RECOGNITION AWARD</h2>
-                <div class="winner-name">SENIYA SHAJAHAN</div>
+        <!-- 35 HR -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">SPECIAL RECOGNITION AWARD</div>
+                <h1 class="winner-name">SENIYA SHAJAHAN</h1>
                 <div class="designation">SR-HR</div>
-                <div class="financial-card"><div class="stock-label">Contribution</div><div class="stock-val" style="color: var(--gold-accent);">EXCELLENCE IN HIRING</div></div>
+                <div class="stats-box">
+                    <span class="stock-label">Contribution</span>
+                    <div class="stat-val highlight">EXCELLENCE IN HIRING</div>
+                </div>
             </div>
-            <div class="content-right">
-                <div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=15cDcqK-E8sRYLMhQxuy83HiuqHPd9KxC&sz=w1000"></div>
-            </div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=15cDcqK-E8sRYLMhQxuy83HiuqHPd9KxC&sz=w1000"></div></div>
         </div>
 
-        <!-- 36. CATEGORY: TOP RELATIONSHIP MANAGER -->
-        <div class="slide center-layout">
-            <h1 style="color: var(--gold-accent);">LEADING REVENUE CONTRIBUTOR</h1>
-            <p style="color: var(--text-secondary); margin-top: 20px;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
+        <!-- 36. CATEGORY: TOP BD -->
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">LEADING REVENUE CONTRIBUTOR</h1>
+            <p style="color: #888; margin-top: 15px; letter-spacing: 2px;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
         </div>
 
-        <!-- 37. TOP BD WINNER -->
-        <div class="slide">
-            <div class="content-left">
-                <h2 style="color: var(--gold-accent);">LEADING REVENUE CONTRIBUTOR</h2>
-                <div class="winner-name">SARITA PATTANAYAK</div>
+        <!-- 37. SARITA (WINNER) -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">LEADING REVENUE CONTRIBUTOR</div>
+                <h1 class="winner-name">SARITA PATTANAYAK</h1>
                 <div class="designation">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="212.07">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 6,75,000</div></div><div style="text-align: right;"><div class="stock-label">Revenue</div><div class="achieved-display">₹ 14,31,456</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Revenue</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div>
         </div>
 
-        <!-- 38. CATEGORY: TOP TEAM LEADER -->
-        <div class="slide center-layout">
-            <h1 style="color: var(--gold-accent);">TOP TEAM LEADER</h1>
-            <p style="color: var(--text-secondary); margin-top: 20px;">TEAM PERFORMANCE RANKING</p>
+        <!-- 38. CATEGORY: TOP TL -->
+        <div class="slide-container layout-center">
+            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP TEAM LEADER</h1>
+            <p style="color: #888; margin-top: 15px; letter-spacing: 2px;">TEAM PERFORMANCE RANKING</p>
         </div>
 
-        <!-- 39. TOP TL RANK 1 -->
-        <div class="slide">
-            <div class="content-left">
-                <h2 style="color: var(--gold-accent);">TOP TEAM LEADER</h2>
-                <div class="winner-name">KARAN KUMAR</div>
+        <!-- 39. KARAN -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP TEAM LEADER</div>
+                <h1 class="winner-name">KARAN KUMAR</h1>
                 <div class="designation">TEAM LEADER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="154.85">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 18,95,026</div></div><div style="text-align: right;"><div class="stock-label">Team Revenue</div><div class="achieved-display">₹ 29,34,533</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Team Revenue</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.85">0</div><span class="percent-sym">%</span></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div>
         </div>
 
-        <!-- 40. TOP MANAGER RANK 1 -->
-        <div class="slide">
-            <div class="content-left">
-                <h2 style="color: var(--gold-accent);">TOP MANAGER</h2>
-                <div class="winner-name">MEGHNA SINGH</div>
+        <!-- 40. TOP MANAGER -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold">TOP MANAGER</div>
+                <h1 class="winner-name">MEGHNA SINGH</h1>
                 <div class="designation">MANAGER</div>
-                <div class="financial-card">
-                    <div class="stock-row"><div><div class="stock-label">Performance</div><div class="stock-percent"><span class="counter" data-target="128.78">0</span>%</div></div></div>
-                    <div class="stock-row" style="margin-top: 20px;"><div><div class="stock-label">Target</div><div class="target-display">₹ 45,00,000</div></div><div style="text-align: right;"><div class="stock-label">Total Revenue</div><div class="achieved-display">₹ 57,95,049</div></div></div>
+                <div class="stats-box">
+                    <div class="stat-row"><div><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Total Revenue</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
+                    <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.78">0</div><span class="percent-sym">%</span></div>
                 </div>
             </div>
-            <div class="content-right"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000" onerror="this.src='https://placehold.co/400x500/111/FFF?text=Meghna'"></div></div>
+            <div class="photo-wrapper"><div class="portrait-frame"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div>
         </div>
 
         <!-- 41. CLOSING -->
-        <div class="slide center-layout">
-            <h1>THANK YOU</h1>
-            <p style="margin-top: 30px; letter-spacing: 2px;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
-            <div class="footer-info">OnePaper Research Analysts Pvt Ltd</div>
-            <div class="slide-counter">41 / 41</div>
+        <div class="slide-container layout-center">
+            <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
+            <div style="margin-top: 60px; font-family: var(--font-body); color: #444;" class="anim-text">ONEPAPER RESEARCH ANALYSTS PVT LTD</div>
         </div>
 
     </div>
 
-    <!-- UI ELEMENTS -->
-    <div class="progress-indicator"><span id="current-index">01</span> / <span id="total-slides">41</span></div>
+    <!-- UI: Navigation and Counter -->
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
     
-    <div class="ui-controls">
-        <button class="nav-btn" onclick="prevSlide()">←</button>
-        <button class="nav-btn" onclick="nextSlide()">→</button>
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="changeSlide(-1)">←</button>
+        <button class="nav-btn" onclick="changeSlide(1)">→</button>
     </div>
 
-<script>
-    // --- FULL SCREEN FUNCTION ---
-    function toggleFullScreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
-      }
-    }
-
-    // --- THREE.JS PARTICLE SYSTEM ---
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-    // Create Particles
-    const geometry = new THREE.BufferGeometry();
-    const count = 1500; // Increased count for denser look
-    const posArray = new Float32Array(count * 3);
-    
-    for(let i = 0; i < count * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 60; // Wider spread
-    }
-    
-    geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const material = new THREE.PointsMaterial({
-        size: 0.04,
-        color: 0xD4AF37, // Gold Particles
-        transparent: true,
-        opacity: 0.7,
-        sizeAttenuation: true
-    });
-    
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-    camera.position.z = 20;
-
-    // Mouse Interaction (Subtle Parallax)
-    let mouseX = 0;
-    let mouseY = 0;
-    document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
-
-    // Animation Clock
-    const clock = new THREE.Clock();
-
-    function animate() {
-        requestAnimationFrame(animate);
+    <!-- SCRIPT -->
+    <script>
+        // --- 3D Background System ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         
-        const elapsedTime = clock.getElapsedTime();
-
-        // 1. Continuous Rotation (The "Alive" movement)
-        particles.rotation.y = elapsedTime * 0.05; // Smooth constant spin
-        particles.rotation.x = elapsedTime * 0.02; // Slight tilt spin
-
-        // 2. Cinematic Floating Camera (The "7D" feel)
-        // Moves the camera in a gentle wave pattern
-        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05; // Gentle mouse follow
-        camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
-        
-        // Add automatic drift
-        camera.position.x += Math.sin(elapsedTime * 0.3) * 0.02;
-        camera.position.y += Math.cos(elapsedTime * 0.2) * 0.02;
-        camera.lookAt(scene.position);
-        
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+        document.getElementById('canvas-wrapper').appendChild(renderer.domElement);
 
-    // --- SLIDE LOGIC ---
-    const slides = document.querySelectorAll('.slide');
-    const currentEl = document.getElementById('current-index');
-    const totalEl = document.getElementById('total-slides');
-    let currentIndex = 0;
-
-    totalEl.innerText = String(slides.length).padStart(2, '0');
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.remove('active');
-            if (i === index) {
-                slide.classList.add('active');
-                
-                // Animate Numbers
-                const counters = slide.querySelectorAll('.counter');
-                counters.forEach(counter => {
-                    const target = parseFloat(counter.getAttribute('data-target'));
-                    gsap.fromTo(counter, 
-                        { innerText: 0 }, 
-                        { innerText: target, duration: 1.5, ease: "power2.out", snap: { innerText: 0.01 } }
-                    );
-                });
-            }
+        // Particle Wave
+        const geometry = new THREE.BufferGeometry();
+        const count = 1200;
+        const posArray = new Float32Array(count * 3);
+        
+        for(let i = 0; i < count * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 60;
+        }
+        
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            color: 0xD4AF37,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
         });
-        currentEl.innerText = String(index + 1).padStart(2, '0');
-    }
+        
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+        
+        // Connect Lines
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.15 });
+        const linesGeometry = new THREE.BufferGeometry();
+        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+        scene.add(linesMesh);
 
-    function nextSlide() {
-        if (currentIndex < slides.length - 1) {
-            currentIndex++;
-            showSlide(currentIndex);
+        camera.position.z = 25;
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX / window.innerWidth - 0.5;
+            mouseY = e.clientY / window.innerHeight - 0.5;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.y += 0.001;
+            particles.rotation.x += 0.0005;
+            linesMesh.rotation.copy(particles.rotation);
+            
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 2 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            
+            renderer.render(scene, camera);
         }
-    }
+        animate();
 
-    function prevSlide() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            showSlide(currentIndex);
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Presentation Logic
+        const slides = document.querySelectorAll('.slide-container');
+        const currEl = document.getElementById('curr-idx');
+        const totalEl = document.getElementById('total-idx');
+        let currentSlide = 0;
+
+        totalEl.innerText = String(slides.length).padStart(2, '0');
+
+        function updateSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            currEl.innerText = String(index + 1).padStart(2, '0');
+            
+            // GSAP Animations
+            const activeSlide = slides[index];
+            
+            // Reset
+            gsap.set(activeSlide.querySelectorAll('.anim-text, .label-gold, .winner-name, .designation, .stats-box'), { y: 30, opacity: 0 });
+            gsap.set(activeSlide.querySelectorAll('.anim-img, .photo-wrapper'), { scale: 0.9, opacity: 0 });
+
+            // Text Stagger
+            gsap.to(activeSlide.querySelectorAll('.anim-text, .label-gold, .winner-name, .designation, .stats-box'), 
+                { y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power4.out" }
+            );
+
+            // Image Reveal
+            gsap.to(activeSlide.querySelectorAll('.anim-img, .photo-wrapper'),
+                { scale: 1, opacity: 1, duration: 1.2, delay: 0.2, ease: "power3.out" }
+            );
+
+            // Number Counter (Odometer Effect)
+            const counters = activeSlide.querySelectorAll('.count-up');
+            counters.forEach(c => {
+                let val = parseFloat(c.getAttribute('data-val'));
+                if(val) {
+                    gsap.fromTo(c, 
+                        { innerText: 0 }, 
+                        { innerText: val, duration: 2.5, ease: "circ.out", snap: { innerText: 0.01 }, onUpdate: function() {
+                            this.targets()[0].innerText = Math.ceil(this.targets()[0].innerText * 100) / 100;
+                        }}
+                    );
+                }
+            });
         }
-    }
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') nextSlide();
-        if (e.key === 'ArrowLeft') prevSlide();
-    });
-
-    showSlide(0);
-
-    // Initial Safety Check: Ensure the first slide is visible if GSAP fails
-    window.onload = function() {
-        if (!window.gsap) {
-            document.querySelector('.slide').classList.add('active');
-            console.warn("GSAP failed to load. Fallback active.");
+        function changeSlide(dir) {
+            let next = currentSlide + dir;
+            if (next >= 0 && next < slides.length) {
+                currentSlide = next;
+                updateSlide(currentSlide);
+            }
         }
-    };
 
-</script>
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else if (document.exitFullscreen) document.exitFullscreen();
+        }
+
+        // Init
+        gsap.registerPlugin(TextPlugin);
+        updateSlide(0);
+
+    </script>
 </body>
 </html>
