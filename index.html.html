@@ -13,8 +13,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Cinzel (Luxury), Manrope (Body) -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Manrope:wght@300;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- Montserrat (Modern Premium), Manrope (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Manrope:wght@300;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -31,7 +31,8 @@
             --text-primary: #FFFFFF;
             --text-muted: #888888;
             
-            --font-head: 'Cinzel', serif;
+            /* Font Update: Modern Premium */
+            --font-head: 'Montserrat', sans-serif;
             --font-body: 'Manrope', sans-serif;
             --font-ticker: 'Share Tech Mono', monospace; /* The Stock Market Font */
         }
@@ -117,7 +118,7 @@
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
             padding: 100px 40px 40px 40px; 
-            box-sizing: border-box; /* Ensure padding doesn't affect centering */
+            box-sizing: border-box;
         }
         
         .slide-container.active {
@@ -131,7 +132,7 @@
             width: 100%; max-width: 1400px;
             gap: 60px;
             align-items: center;
-            justify-items: center; /* Center items in grid cells */
+            justify-items: center;
             margin: 0 auto;
         }
 
@@ -146,8 +147,8 @@
 
         .content-panel {
             display: flex; flex-direction: column;
-            align-items: center; /* Center horizontally */
-            text-align: center; /* Center text */
+            align-items: center;
+            text-align: center;
             width: 100%;
             justify-content: center;
         }
@@ -412,18 +413,7 @@
             <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted);">SUPPORT & HR</p>
         </div>
 
-        <!-- 3. SHAIK NAZMA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1>
-                <div class="designation anim-text">OPERATION MANAGER</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
-            </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
-        </div>
-
-        <!-- 4. SANJAY -->
+        <!-- 3. SANJAY -->
         <div class="slide-container layout-split">
             <div class="content-panel">
                 <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
@@ -432,6 +422,17 @@
                 <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div>
+        </div>
+
+        <!-- 4. MIR JULEKHA (MOVED HERE) -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                <h1 class="winner-name anim-text">MIR JULEKHA PARVIN</h1>
+                <div class="designation anim-text">SR. OPERATION EXECUTIVE</div>
+                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+            </div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1joJndSXSug1KcOQU1NRGGqVPDEbqqPmu&sz=w1000"></div></div></div>
         </div>
 
         <!-- 5. ABHISHEK -->
@@ -478,18 +479,7 @@
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1-1qVlE5TI5DqwDCfnScfd9yRWT3w1XVt&sz=w1000"></div></div></div>
         </div>
 
-        <!-- 9. MIR JULEKHA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">MIR JULEKHA PARVIN</h1>
-                <div class="designation anim-text">SR. OPERATION EXECUTIVE</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
-            </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1joJndSXSug1KcOQU1NRGGqVPDEbqqPmu&sz=w1000"></div></div></div>
-        </div>
-
-        <!-- 10. HR -->
+        <!-- 9. HR (SENIYA) -->
         <div class="slide-container layout-split">
             <div class="content-panel">
                 <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
@@ -501,6 +491,17 @@
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=15cDcqK-E8sRYLMhQxuy83HiuqHPd9KxC&sz=w1000"></div></div></div>
+        </div>
+
+        <!-- 10. SHAIK NAZMA (MOVED HERE) -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                <h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1>
+                <div class="designation anim-text">OPERATION MANAGER</div>
+                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+            </div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
         </div>
 
         <!-- 11. CATEGORY: RM COLLECTIVE -->
@@ -857,7 +858,7 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1DXlRB_kDLXODnFKcjqiWl4qEiXF4JYhB&sz=w1000" onerror="this.src='https://placehold.co/400x500/000/FFF?text=Nishanth'"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Nishanth"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: KODA -->
@@ -875,7 +876,7 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1fvQ63j2VTh60Hl_KyB-pp16f4R5HvQm6&sz=w1000"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Koda"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: PRERANA -->
@@ -893,7 +894,7 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1gtvW5zOh0tkp3MxxSaxKzVPdfpESvhy7&sz=w1000"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Prerana"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: HARSHITHA -->
@@ -911,12 +912,12 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Jq_R9Kbt0outGsZFZ6ggtnEV-zqcnQrA&sz=w1000"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Harshitha"></div></div></div>
         </div>
 
         <!-- 34. CATEGORY: LEADERS COLLECTIVE -->
         <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
+            <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
             <div style="width: 80px; height: 2px; background: #fff; margin: 30px 0;" class="anim-text"></div>
         </div>
 
@@ -1021,7 +1022,7 @@
         <!-- 43. CATEGORY: TOP TL -->
         <div class="slide-container layout-center">
             <h1 class="label-gold" style="border:none; font-size:4rem;">TOP TEAM LEADER</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">TEAM PERFORMANCE RANKING</p>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">TEAM PERFORMANCE RANKING</p>
         </div>
 
         <!-- 44. KARAN -->
