@@ -67,7 +67,7 @@
         .company-logo {
             position: fixed;
             top: 20px; left: 30px;
-            width: 140px;
+            width: 150px;
             z-index: 1000;
             /* LOGO FIX: Invert converts white bg to black, Screen blend mode drops the black, keeping logo visible */
             filter: invert(1);
@@ -117,6 +117,7 @@
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
             padding: 100px 40px 40px 40px; 
+            box-sizing: border-box;
         }
         
         .slide-container.active {
@@ -126,11 +127,11 @@
         /* --- GRID SYSTEM (CENTERED) --- */
         .layout-split {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Equal width */
+            grid-template-columns: 1fr 1fr;
             width: 100%; max-width: 1400px;
             gap: 60px;
             align-items: center;
-            justify-items: center; /* Center items in grid cells */
+            justify-items: center;
             margin: 0 auto;
         }
 
@@ -140,13 +141,15 @@
             text-align: center;
             max-width: 1200px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .content-panel {
             display: flex; flex-direction: column;
-            align-items: center; /* Center horizontally */
-            text-align: center; /* Center text */
+            align-items: center;
+            text-align: center;
             width: 100%;
+            justify-content: center;
         }
 
         /* --- CONTENT STYLING --- */
@@ -245,10 +248,6 @@
             100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
         }
 
-        .trend-indicator {
-            color: var(--gold-primary); font-size: 1.2rem; margin-left: 10px;
-        }
-
         /* Stock Bar (Progress) */
         .stock-bar-container {
             width: 100%; height: 4px;
@@ -269,10 +268,8 @@
         }
 
         .big-percent-wrapper {
-            display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
-            justify-content: center; /* Center align percentage */
+            display: flex; align-items: baseline; gap: 10px; margin-top: 5px;
+            justify-content: center;
             width: 100%;
         }
         
@@ -386,7 +383,7 @@
     <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶</button>
     
     <!-- Slide Counter (HIDDEN) -->
-    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
 
     <div class="nav-controls">
         <button class="nav-btn" onclick="changeSlide(-1)">←</button>
@@ -400,8 +397,6 @@
             <div class="intro-date-text anim-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
             <h1 class="hero-title anim-text">QUARTERLY PERFORMANCE REPORT</h1>
             <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
-            <!-- Bigger Company Name -->
-            <p class="anim-text" style="letter-spacing: 4px; color: #fff; font-size: 2.5rem; margin-top: 40px; font-family: var(--font-head); text-transform: uppercase; font-weight: 700; text-shadow: 0 0 30px rgba(255,255,255,0.4);">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
         </div>
 
         <!-- 2. CATEGORY: RM COLLECTIVE -->
@@ -423,7 +418,7 @@
                         <div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 9,63,236</span></div>
                     </div>
                     <div style="text-align:center;">
-                        <span class="stock-label">GROWTH</span>
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
                         <div class="big-percent-wrapper">
                             <span class="trend-up">▲</span>
                             <span class="plus-sign">+</span>
@@ -445,7 +440,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 65,813</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,93,551</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="294.09">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 85%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="294.09">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 85%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1WNbCp7ynC147i5pWo5uSFXaPt7CMN0-z&sz=w1000"></div></div></div>
@@ -459,7 +458,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,54,449</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="271.23">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 80%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="271.23">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 80%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Cj9G1mbk8FEAtwgrJ7Oy05Mo0T3Fw6Zh&sz=w1000"></div></div></div>
@@ -473,7 +476,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,85,197</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="259.64">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 78%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="259.64">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 78%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1zqJ1Eo-ULqFR-c6JK8b7SpotF4R-9v-E&sz=w1000"></div></div></div>
@@ -487,7 +494,11 @@
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div></div>
@@ -501,7 +512,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 2,70,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,12,501</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="189.82">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="189.82">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1HVvAYuzaLlLv3jKZ_rdnlTjOLJnbHHvq&sz=w1000"></div></div></div>
@@ -515,7 +530,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,68,221</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="181.83">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 63%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="181.83">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 63%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1A_ucW6VkvaBWlafhrKFrlpv-zPQT1GQ-&sz=w1000"></div></div></div>
@@ -529,7 +548,11 @@
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 10,13,297</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="168.88">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 60%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="168.88">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 60%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=169Xf9taWnYtBVcDSX7f5R7qieqIGmn2K&sz=w1000"></div></div></div>
@@ -543,7 +566,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,79,314</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="146.88">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="146.88">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1sugklwA9a8D9_-6vSsLHkGG33cFRnjJv&sz=w1000"></div></div></div>
@@ -557,7 +584,11 @@
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,99,045</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="141.22">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 50%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="141.22">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 50%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=19lAfaXzojQat1Rcnw_ezKow8UcR5c4VS&sz=w1000"></div></div></div>
@@ -571,7 +602,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 46,059</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 63,305</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="137.44">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 48%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="137.44">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 48%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1lRj3unffvso4vKS7577UPJMmEWZBNqoc&sz=w1000"></div></div></div>
@@ -585,7 +620,11 @@
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,71,229</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="132.84">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 45%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="132.84">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 45%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=16xTSE6MnhkFdmQtaTwc-GtRH1lCOiO5O&sz=w1000"></div></div></div>
@@ -599,7 +638,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 4,33,884</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="131.48">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 44%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="131.48">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 44%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1EXfpVwaY4hpRjn89MbZHJtFMu9JZwo9V&sz=w1000"></div></div></div>
@@ -613,7 +656,11 @@
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 90,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,13,644</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="126.27">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="126.27">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1E6nSL9omjhG6KVPG7r-THKfy4gHLZn-t&sz=w1000"></div></div></div>
@@ -627,7 +674,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,80,738</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="125.56">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="125.56">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1LwYxFL2e8xT2IOXDuVUCKupyKlrQTYIc&sz=w1000"></div></div></div>
@@ -641,7 +692,11 @@
                 <div class="designation anim-text">RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 3,71,854</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="118.99">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 38%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="118.99">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 38%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Fj-womU2YE8ycFXaDtEGkyQhtXxlNSha&sz=w1000"></div></div></div>
@@ -655,7 +710,11 @@
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,74,323</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="116.02">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 37%;"></div></div></div>
+                    <div style="text-align:center;">
+                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="116.02">0</div><span class="percent-sym">%</span></div>
+                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 37%;"></div></div>
+                    </div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1hD5TUxfgUs1eHH3eUy3Y_Ioa8WC7p2lB&sz=w1000"></div></div></div>
@@ -737,7 +796,7 @@
 
         <!-- 28-34 SUPPORT -->
         <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1><div class="designation anim-text">OPERATION MANAGER</div><div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div></div>
-        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name anim-text">SANJAY SRINIVAS</h1><div class="designation anim-text">SR. OPERATION EXECUTIVE</div><div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div></div>
+        <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name anim-text">SANJAY SRINIVAS</h1><div class="designation anim-text">OPERATION MANAGER</div><div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div></div>
         <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name anim-text">ABHISHEK CHOWDHURY</h1><div class="designation anim-text">OPERATION EXECUTIVE</div><div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1OlyjrHlM5oz_eiSTrFN5hnud3eYxwlKe&sz=w1000"></div></div></div></div>
         <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name anim-text">ANITHA V</h1><div class="designation anim-text">OPERATION EXECUTIVE</div><div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div></div><div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=18J2e0EzosmDT_qKgDol6tDB8VHxBjZop&sz=w1000"></div></div></div></div>
         <div class="slide-container layout-split"><div class="content-panel"><div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div><h1 class="winner-name anim-text">SAKSHAM SHARMA</h1><div class="designation anim-text">COMPLIANCE MANAGER</div><div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN COMPLIANCE</div></div></div><div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Q8t-MnxEekx1KvBZzswb_fy-lBt7aBZF&sz=w1000"></div></div></div></div>
@@ -797,12 +856,6 @@
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
         </div>
-        
-        <!-- NEW SLIDE: TOP MANAGER CATEGORY -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP MANAGER</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">OVERALL PERFORMANCE</p>
-        </div>
 
         <!-- 40. TOP MANAGER -->
         <div class="slide-container layout-split">
@@ -812,7 +865,9 @@
                 <div class="designation anim-text">MANAGER</div>
                 <div class="stats-box anim-text">
                     <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Total Revenue</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
-                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.78">0</div><span class="percent-sym">%</span></div><div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div></div>
+                    <div style="text-align:center;"><div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.78">0</div><span class="percent-sym">%</span></div>
+                    <div style="text-align:center; margin-top:10px;"><span class="stock-label">ACHIEVEMENT</span></div>
+                    <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div></div>
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div></div>
@@ -820,9 +875,8 @@
 
         <!-- 41. CLOSING -->
         <div class="slide-container layout-center">
-            <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
-            <div style="margin-top: 60px; font-family: var(--font-head); color: #fff; font-size: 2rem; letter-spacing: 2px;" class="anim-text">ONEPAPER RESEARCH ANALYSTS PVT LTD</div>
+            <h1 class="label-gold anim-text" style="font-size:4rem; border:none;">THANK YOU</h1>
+            <p class="winner-name anim-text" style="margin-top:20px;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
         </div>
 
     </div>
@@ -851,7 +905,7 @@
         const posArray = new Float32Array(count * 3);
         
         for(let i = 0; i < count * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 60;
+            posArray[i] = (Math.random() - 0.5) * 60; // Wider spread
         }
         
         geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
