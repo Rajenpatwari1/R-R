@@ -87,10 +87,7 @@
         .fullscreen-btn:hover { background: var(--gold-primary); color: #000; }
 
         .slide-counter {
-            position: fixed; top: 42px; right: 90px;
-            font-family: var(--font-ticker); color: var(--gold-primary);
-            font-size: 1rem; letter-spacing: 2px; z-index: 1000;
-            background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px;
+            display: none; /* HIDDEN AS REQUESTED */
         }
 
         .nav-controls {
@@ -120,14 +117,13 @@
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
             padding: 100px 40px 40px 40px; 
-            box-sizing: border-box; /* Ensure padding doesn't affect centering */
         }
         
         .slide-container.active {
             opacity: 1; visibility: visible; z-index: 20;
         }
 
-        /* --- GRID SYSTEM (CENTERED FIX) --- */
+        /* --- GRID SYSTEM (CENTERED) --- */
         .layout-split {
             display: grid;
             grid-template-columns: 1fr 1fr; /* Equal width */
@@ -135,7 +131,7 @@
             gap: 60px;
             align-items: center;
             justify-items: center; /* Center items in grid cells */
-            margin: 0 auto; /* Force horizontal center */
+            margin: 0 auto;
         }
 
         .layout-center {
@@ -143,8 +139,7 @@
             justify-content: center; align-items: center;
             text-align: center;
             max-width: 1200px;
-            width: 100%; /* Ensure full width usage */
-            margin: 0 auto;
+            width: 100%;
         }
 
         .content-panel {
@@ -152,7 +147,6 @@
             align-items: center; /* Center horizontally */
             text-align: center; /* Center text */
             width: 100%;
-            justify-content: center; /* Vertical center */
         }
 
         /* --- CONTENT STYLING --- */
@@ -168,7 +162,7 @@
             display: inline-block;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             padding-bottom: 15px;
-            margin-left: auto; margin-right: auto; /* Alignment */
+            margin-left: auto; margin-right: auto;
         }
 
         .winner-name {
@@ -195,7 +189,7 @@
             display: inline-block;
         }
 
-        /* --- STATS BOX (CENTERED) --- */
+        /* --- STATS BOX --- */
         .stats-box {
             width: 100%;
             max-width: 450px;
@@ -205,7 +199,7 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
-            margin-left: auto; margin-right: auto; /* Center the box */
+            margin-left: auto; margin-right: auto;
         }
 
         .stat-row {
@@ -391,7 +385,7 @@
     <!-- Fullscreen Toggle -->
     <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶</button>
     
-    <!-- Centered Slide Counter -->
+    <!-- Slide Counter (HIDDEN) -->
     <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
 
     <div class="nav-controls">
@@ -766,14 +760,14 @@
 
         <!-- 36. CATEGORY: TOP BD -->
         <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">LEADING REVENUE CONTRIBUTOR</h1>
+            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP REVENUE CONTRIBUTOR</h1>
             <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted); margin-top: 20px;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
         </div>
 
         <!-- 37. SARITA (WINNER) -->
         <div class="slide-container layout-split">
             <div class="content-panel">
-                <div class="label-gold anim-text">LEADING REVENUE CONTRIBUTOR</div>
+                <div class="label-gold anim-text">TOP REVENUE CONTRIBUTOR</div>
                 <h1 class="winner-name anim-text">SARITA PATTANAYAK</h1>
                 <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
                 <div class="stats-box anim-text">
@@ -820,15 +814,15 @@
 
         <!-- 41. CLOSING -->
         <div class="slide-container layout-center">
-            <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
-            <div style="margin-top: 60px; font-family: var(--font-body); color: #444;" class="anim-text">ONEPAPER RESEARCH ANALYSTS PVT LTD</div>
+            <h1 class="hero-title anim-text" style="font-size:4rem;">THANK YOU</h1>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 2.5rem; font-weight: 700;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
+            <div style="margin-top: 60px; font-family: var(--font-head); color: #fff; font-size: 2rem; letter-spacing: 2px;" class="anim-text">ONEPAPER RESEARCH ANALYSTS PVT LTD</div>
         </div>
 
     </div>
 
     <!-- UI: Navigation and Counter -->
-    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">41</span></div>
+    <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
     
     <div class="nav-controls">
         <button class="nav-btn" onclick="changeSlide(-1)">←</button>
@@ -851,7 +845,7 @@
         const posArray = new Float32Array(count * 3);
         
         for(let i = 0; i < count * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 60; // Wider spread
+            posArray[i] = (Math.random() - 0.5) * 60;
         }
         
         geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -865,6 +859,13 @@
         
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
+        
+        // Connect Lines
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.15 });
+        const linesGeometry = new THREE.BufferGeometry();
+        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+        scene.add(linesMesh);
+
         camera.position.z = 20;
 
         // Mouse Interaction (Subtle Parallax)
