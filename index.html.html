@@ -141,6 +141,7 @@
             justify-content: center; align-items: center;
             text-align: center;
             max-width: 1200px;
+            width: 100%; /* Ensure full width usage */
         }
 
         .content-panel {
@@ -163,6 +164,7 @@
             display: inline-block;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             padding-bottom: 15px;
+            margin-left: auto; margin-right: auto; /* Alignment */
         }
 
         .winner-name {
@@ -199,6 +201,7 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
+            margin-left: auto; margin-right: auto; /* Center the box */
         }
 
         .stat-row {
@@ -269,6 +272,8 @@
 
         .big-percent-wrapper {
             display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 10px;
             justify-content: center; /* Center align percentage */
             width: 100%;
         }
@@ -382,7 +387,7 @@
     <!-- Fullscreen Toggle -->
     <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶</button>
     
-    <!-- Centered Slide Counter -->
+    <!-- Slide Counter (Top Right) -->
     <div class="slide-counter"><span id="curr-idx">01</span> / <span id="total-idx">40</span></div>
 
     <div class="nav-controls">
@@ -932,12 +937,6 @@
                         }}
                     );
                 }
-            });
-
-            // Graph Animation
-            const bars = activeSlide.querySelectorAll('.stock-bar-fill');
-            bars.forEach(b => {
-                gsap.fromTo(b, { width: "0%" }, { width: "100%", duration: 1.5, ease: "power2.out" });
             });
         }
 
