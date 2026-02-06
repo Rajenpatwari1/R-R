@@ -67,7 +67,7 @@
         .company-logo {
             position: fixed;
             top: 20px; left: 30px;
-            width: 140px;
+            width: 150px;
             z-index: 1000;
             /* LOGO FIX: Invert converts white bg to black, Screen blend mode drops the black, keeping logo visible */
             filter: invert(1);
@@ -192,7 +192,7 @@
             display: inline-block;
         }
 
-        /* --- STATS BOX --- */
+        /* --- STATS BOX (CENTERED) --- */
         .stats-box {
             width: 100%;
             max-width: 450px;
@@ -398,22 +398,15 @@
 
     <div class="slides-wrapper">
 
-        <!-- 1. INTRO (STABILIZED & STYLED LIKE SLIDE 40) -->
+        <!-- 1. INTRO (STABILIZED) -->
         <div class="slide-container active layout-center">
-            <!-- Header Style: Matches Category Title Size & Font -->
-            <h1 class="label-gold anim-text" style="font-size: 4rem; border: none; text-shadow: none;">REWARD & RECOGNITION</h1>
-            
-            <!-- Designation Style: Matches Subtitle -->
-            <p class="designation anim-text" style="margin-bottom: 20px;">QUARTERLY PERFORMANCE REPORT</p>
-            
-            <div style="width: 100px; height: 1px; background: rgba(255,255,255,0.3); margin: 20px 0;" class="anim-text"></div>
-
-            <!-- Name Style: Matches Winner Name -->
-            <p class="winner-name anim-text" style="font-size: 2.5rem; letter-spacing: 4px; margin-top: 20px;">ONEPAPER RESEARCH ANALYSTS PVT LTD</p>
-             <p class="anim-text" style="font-family: var(--font-body); color: #888; margin-top: 30px; letter-spacing: 4px;">OCTOBER • NOVEMBER • DECEMBER 2025</p>
+            <div class="intro-date-text anim-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
+            <h1 class="hero-title anim-text">REWARD &<br>RECOGNITION</h1>
+            <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
+            <p class="anim-text" style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.5rem; font-weight: bold; font-family: var(--font-head);">QUARTERLY PERFORMANCE REPORT</p>
         </div>
 
-        <!-- 2. CATEGORY: SPECIAL RECOGNITION -->
+        <!-- 2. CATEGORY: RM COLLECTIVE -->
         <div class="slide-container layout-center">
             <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">SPECIAL RECOGNITION AWARD</h1>
             <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted);">SUPPORT & HR</p>
@@ -899,7 +892,7 @@
         <!-- 34. CATEGORY: ATTRITION -->
         <div class="slide-container layout-center">
             <h1 class="label-gold" style="border:none; font-size:4rem;">HIGHEST RETENTION TEAM</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">EXCELLENCE IN TEAM LOYALTY</p>
+            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">EXCELLENCE IN TEAM RETENTION</p>
         </div>
 
         <!-- 35. DIKSHITA -->
