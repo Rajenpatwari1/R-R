@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OnePaper Rewards - Premium Edition</title>
+    <title>OnePaper Rewards - Balanced Edition</title>
     
     <!-- Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -70,7 +70,6 @@
             top: 20px; left: 30px;
             width: 150px;
             z-index: 1000;
-            /* LOGO FIX: Invert converts white bg to black, Screen blend mode drops the black, keeping logo visible */
             filter: invert(1);
             mix-blend-mode: screen;
             opacity: 0.9;
@@ -87,9 +86,7 @@
         }
         .fullscreen-btn:hover { background: var(--gold-primary); color: #000; }
 
-        .slide-counter {
-            display: none; /* HIDDEN AS REQUESTED */
-        }
+        .slide-counter { display: none; }
 
         .nav-controls {
             position: fixed; bottom: 30px; right: 30px;
@@ -112,43 +109,50 @@
             z-index: 10;
         }
 
+        /* PARENT CONTAINER: Keeps everything strictly centered on screen */
         .slide-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; 
+            align-items: center;     /* Vertical Center */
+            justify-content: center; /* Horizontal Center */
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
-            padding: 100px 40px 40px 40px; 
-            box-sizing: border-box; /* Ensure padding doesn't affect centering */
+            padding: 40px; 
+            box-sizing: border-box;
         }
         
         .slide-container.active {
             opacity: 1; visibility: visible; z-index: 20;
         }
 
-        /* --- GRID SYSTEM (CENTERED) --- */
+        /* --- INNER LAYOUTS (The "Paper" holding the content) --- */
+        
+        /* 1. Centered Layout (Intro, Categories) */
+        .layout-center {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            width: 100%; 
+            max-width: 1200px; /* Limits width so margins appear */
+            margin: 0 auto;
+        }
+
+        /* 2. Split Layout (Text Left, Image Right) */
         .layout-split {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Equal width */
-            width: 100%; max-width: 1400px;
-            gap: 60px;
+            grid-template-columns: 1fr 1fr; /* Exact 50/50 split */
+            width: 100%; 
+            max-width: 1300px; /* Controlled width */
+            gap: 60px; 
             align-items: center;
             justify-items: center;
             margin: 0 auto;
         }
 
-        .layout-center {
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
         .content-panel {
             display: flex; flex-direction: column;
-            align-items: center; /* Center horizontally */
-            text-align: center; /* Center text */
+            align-items: center; /* Center text in its column */
+            text-align: center;  /* Center text alignment */
             width: 100%;
             justify-content: center;
         }
@@ -157,36 +161,35 @@
         
         .label-gold {
             font-family: var(--font-head);
-            font-size: clamp(2rem, 3.5vw, 4rem); 
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem); 
             line-height: 1.1;
             color: var(--gold-primary);
             text-transform: uppercase; 
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
             display: inline-block;
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 15px;
-            margin-left: auto; margin-right: auto;
+            padding-bottom: 10px;
         }
 
         .winner-name {
             font-family: var(--font-body);
-            font-size: clamp(1.8rem, 2.5vw, 2.5rem); 
-            font-weight: 700;
+            font-size: clamp(2rem, 3.5vw, 3.5rem); 
+            font-weight: 800;
             color: #fff; 
             margin-bottom: 10px; 
-            line-height: 1.2;
+            line-height: 1.1;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .designation {
             font-family: var(--font-body); 
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--text-muted); 
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase; 
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-weight: 400;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 5px;
@@ -196,18 +199,20 @@
         /* --- STATS BOX --- */
         .stats-box {
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             background: rgba(10,10,10,0.6);
-            padding: 25px;
+            padding: 20px 25px;
             border-radius: 8px;
             border: 1px solid rgba(212, 175, 55, 0.2);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
-            margin-left: auto; margin-right: auto;
+            margin: 0 auto; /* Center box in column */
         }
 
         .stat-row {
-            display: flex; justify-content: space-between; align-items: flex-end;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end;
             border-bottom: 1px solid rgba(255,255,255,0.05);
             padding-bottom: 10px;
         }
@@ -229,9 +234,23 @@
             text-align: right;
             animation: pulse-gold-text 2s infinite ease-in-out;
         }
+        
+        .stat-val.highlight {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .big-percent-wrapper {
+            display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
+            justify-content: center; /* Centered Percent */
+            width: 100%;
+        }
 
         .stock-percent { 
-            font-size: 4.5rem; font-family: var(--font-ticker); 
+            font-size: 4rem; font-family: var(--font-ticker); 
             color: var(--gold-primary); line-height: 1; 
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
             animation: gold-pulse 3s infinite ease-in-out;
@@ -249,10 +268,6 @@
             100% { transform: scale(1); text-shadow: 0 0 30px rgba(212, 175, 55, 0.3); }
         }
 
-        .trend-indicator {
-            color: var(--gold-primary); font-size: 1.2rem; margin-left: 10px;
-        }
-
         /* Stock Bar (Progress) */
         .stock-bar-container {
             width: 100%; height: 4px;
@@ -268,20 +283,11 @@
             background: linear-gradient(90deg, var(--gold-primary), #fff);
             width: 0%;
             border-radius: 3px;
-            transition: width 1s ease-out; 
             box-shadow: 0 0 10px var(--gold-glow);
-        }
-
-        .big-percent-wrapper {
-            display: flex; align-items: baseline; gap: 10px; margin-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
-            justify-content: center; /* Center align percentage */
-            width: 100%;
         }
         
         .percent-sym { 
-            font-size: 2.5rem; color: var(--gold-dim); 
+            font-size: 2rem; color: var(--gold-dim); 
             font-family: var(--font-head); 
         }
 
@@ -295,8 +301,9 @@
 
         /* --- PORTRAIT --- */
         .photo-wrapper {
-            position: relative; width: 100%; max-width: 380px; aspect-ratio: 3/4;
-            justify-self: center;
+            position: relative; 
+            width: 100%; max-width: 380px; aspect-ratio: 3/4;
+            justify-self: center; /* Center image within its column */
         }
 
         .photo-card {
@@ -360,20 +367,18 @@
 
         /* --- RESPONSIVE --- */
         @media (max-width: 900px) {
-            .slide-container { padding: 80px 20px; overflow-y: auto; display: block; }
             .layout-split { 
-                grid-template-columns: 1fr; 
-                text-align: center; 
-                gap: 40px; 
-                height: auto;
-                display: flex;
-                flex-direction: column-reverse; 
+                display: flex; 
+                flex-direction: column-reverse; /* Stack Image on Top (visually), Text Bottom */
+                gap: 30px; 
+                width: 90%;
             }
-            .photo-wrapper { width: 280px; margin: 0 auto; }
-            .label-gold { font-size: 2.2rem; margin-top: 20px; border-bottom: none; }
-            .winner-name { font-size: 1.8rem; }
-            .stats-box { max-width: 100%; text-align: left; }
-            .hero-title { font-size: 3rem; }
+            .content-panel { align-items: center; text-align: center; }
+            .winner-name { text-align: center; font-size: 2rem; }
+            .stats-box { margin: 0 auto; text-align: left; }
+            .designation, .label-gold { text-align: center; }
+            .big-percent-wrapper { justify-content: center; }
+            .photo-wrapper { width: 250px; }
         }
     </style>
 </head>
@@ -381,8 +386,7 @@
 
     <div id="canvas-wrapper"></div>
     <div class="grid-overlay"></div>
-    <div class="grain"></div>
-
+    
     <!-- Company Logo -->
     <img src="https://drive.google.com/thumbnail?id=1OLed4fFngR-yUPNwI-CRtMVh6EuZ9lC8&sz=w200" alt="Logo" class="company-logo">
 
@@ -400,677 +404,774 @@
     <div class="slides-wrapper">
 
         <!-- 1. INTRO (STABILIZED) -->
-        <div class="slide-container active layout-center">
-            <div class="intro-date-text anim-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
-            <h1 class="hero-title anim-text">REWARD &<br>RECOGNITION</h1>
-            <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
-            <p class="anim-text" style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.5rem; font-weight: bold; font-family: var(--font-head);">QUARTERLY PERFORMANCE REPORT</p>
+        <div class="slide-container active">
+            <div class="layout-center">
+                <div class="intro-date-text anim-text">OCTOBER • NOVEMBER • DECEMBER 2025</div>
+                <h1 class="hero-title anim-text">REWARD &<br>RECOGNITION</h1>
+                <div style="width: 80px; height: 3px; background: var(--gold-primary); margin: 40px auto; box-shadow: 0 0 15px var(--gold-glow);"></div>
+                <p class="anim-text" style="letter-spacing: 3px; color: var(--gold-primary); font-size: 1.5rem; font-weight: bold; font-family: var(--font-head);">QUARTERLY PERFORMANCE REPORT</p>
+            </div>
         </div>
 
         <!-- 2. CATEGORY: SPECIAL RECOGNITION -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">SPECIAL RECOGNITION AWARD</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted);">SUPPORT & HR</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">SPECIAL RECOGNITION AWARD</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--text-muted);">SUPPORT & HR</p>
+            </div>
         </div>
 
         <!-- 3. SANJAY -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">SANJAY SRINIVAS</h1>
-                <div class="designation anim-text">OPERATION MANAGER</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">SANJAY SRINIVAS</h1>
+                    <div class="designation anim-text">OPERATION MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <span class="stock-label">Contribution</span>
+                        <div class="stat-val highlight">EXCELLENCE IN SUPPORT</div>
+                    </div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div>
         </div>
 
         <!-- 4. MIR JULEKHA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">MIR JULEKHA PARVIN</h1>
-                <div class="designation anim-text">SR. OPERATION EXECUTIVE</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">MIR JULEKHA PARVIN</h1>
+                    <div class="designation anim-text">SR. OPERATION EXECUTIVE</div>
+                    <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1joJndSXSug1KcOQU1NRGGqVPDEbqqPmu&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1joJndSXSug1KcOQU1NRGGqVPDEbqqPmu&sz=w1000"></div></div></div>
         </div>
 
         <!-- 5. ABHISHEK -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">ABHISHEK CHOWDHURY</h1>
-                <div class="designation anim-text">OPERATION EXECUTIVE</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">ABHISHEK CHOWDHURY</h1>
+                    <div class="designation anim-text">OPERATION EXECUTIVE</div>
+                    <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1OlyjrHlM5oz_eiSTrFN5hnud3eYxwlKe&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1OlyjrHlM5oz_eiSTrFN5hnud3eYxwlKe&sz=w1000"></div></div></div>
         </div>
 
         <!-- 6. ANITHA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">ANITHA V</h1>
-                <div class="designation anim-text">OPERATION EXECUTIVE</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">ANITHA V</h1>
+                    <div class="designation anim-text">OPERATION EXECUTIVE</div>
+                    <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=18J2e0EzosmDT_qKgDol6tDB8VHxBjZop&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=18J2e0EzosmDT_qKgDol6tDB8VHxBjZop&sz=w1000"></div></div></div>
         </div>
 
         <!-- 7. SAKSHAM -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">SAKSHAM SHARMA</h1>
-                <div class="designation anim-text">COMPLIANCE MANAGER</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN COMPLIANCE</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">SAKSHAM SHARMA</h1>
+                    <div class="designation anim-text">COMPLIANCE MANAGER</div>
+                    <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN COMPLIANCE</div></div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Q8t-MnxEekx1KvBZzswb_fy-lBt7aBZF&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Q8t-MnxEekx1KvBZzswb_fy-lBt7aBZF&sz=w1000"></div></div></div>
         </div>
 
         <!-- 8. PRATIK -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">PRATIK PRASHANT SHINDE</h1>
-                <div class="designation anim-text">RESEARCH ANALYST</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN RESEARCH</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">PRATIK PRASHANT SHINDE</h1>
+                    <div class="designation anim-text">RESEARCH ANALYST</div>
+                    <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN RESEARCH</div></div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1-1qVlE5TI5DqwDCfnScfd9yRWT3w1XVt&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1-1qVlE5TI5DqwDCfnScfd9yRWT3w1XVt&sz=w1000"></div></div></div>
         </div>
 
         <!-- 9. SHAIK NAZMA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1>
-                <div class="designation anim-text">OPERATION MANAGER</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1>
+                    <div class="designation anim-text">OPERATION MANAGER</div>
+                    <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+                </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
         </div>
 
         <!-- 10. HR -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">SENIYA SHAJAHAN</h1>
-                <div class="designation anim-text">SR-HR</div>
-                <div class="stats-box anim-text">
-                    <span class="stock-label">Contribution</span>
-                    <div class="stat-val highlight">EXCELLENCE IN HIRING</div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                    <h1 class="winner-name anim-text">SENIYA SHAJAHAN</h1>
+                    <div class="designation anim-text">SR-HR</div>
+                    <div class="stats-box anim-text">
+                        <span class="stock-label">Contribution</span>
+                        <div class="stat-val highlight">EXCELLENCE IN HIRING</div>
+                    </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=15cDcqK-E8sRYLMhQxuy83HiuqHPd9KxC&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=15cDcqK-E8sRYLMhQxuy83HiuqHPd9KxC&sz=w1000"></div></div></div>
         </div>
 
         <!-- 11. CATEGORY: RM COLLECTIVE -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">TOP INDIVIDUAL PERFORMERS</h1>
-            <p class="anim-text" style="color: #888; margin-top: 15px; letter-spacing: 2px;">RELATIONSHIP MANAGERS</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">TOP INDIVIDUAL PERFORMERS</h1>
+                <p class="anim-text" style="color: #888; margin-top: 15px; letter-spacing: 2px;">RELATIONSHIP MANAGERS</p>
+            </div>
         </div>
 
         <!-- 12. ABINESH R -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">ABINESH R</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                
-                <div class="stats-box anim-text">
-                    <div class="stat-row">
-                        <div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 1,49,400</span></div>
-                        <div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 9,63,236</span></div>
-                    </div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper">
-                            <span class="trend-up">▲</span>
-                            <span class="plus-sign">+</span>
-                            <div class="stock-percent count-up" data-val="644.74">0</div>
-                            <span class="percent-sym">%</span>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">ABINESH R</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    
+                    <div class="stats-box anim-text">
+                        <div class="stat-row">
+                            <div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 1,49,400</span></div>
+                            <div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 9,63,236</span></div>
                         </div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%;"></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper">
+                                <span class="trend-up">▲</span>
+                                <span class="plus-sign">+</span>
+                                <div class="stock-percent count-up" data-val="644.74">0</div>
+                                <span class="percent-sym">%</span>
+                            </div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000" onerror="this.src='https://placehold.co/400x500/000/FFF?text=Abinesh'"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000" onerror="this.src='https://placehold.co/400x500/000/FFF?text=Abinesh'"></div></div></div>
         </div>
 
         <!-- 13. ACHUKATLA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">ACHUKATLA JABEEULLA</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 65,813</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,93,551</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="294.09">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 85%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">ACHUKATLA JABEEULLA</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 65,813</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,93,551</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="294.09">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 85%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1WNbCp7ynC147i5pWo5uSFXaPt7CMN0-z&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1WNbCp7ynC147i5pWo5uSFXaPt7CMN0-z&sz=w1000"></div></div></div>
         </div>
 
         <!-- 14. LAVANYA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">LAVANYA B</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,54,449</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="271.23">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 80%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">LAVANYA B</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,54,449</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="271.23">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 80%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Cj9G1mbk8FEAtwgrJ7Oy05Mo0T3Fw6Zh&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Cj9G1mbk8FEAtwgrJ7Oy05Mo0T3Fw6Zh&sz=w1000"></div></div></div>
         </div>
 
         <!-- 15. ROSHAN -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">ROSHAN XV</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,85,197</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="259.64">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 78%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">ROSHAN XV</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 12,85,197</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="259.64">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 78%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1zqJ1Eo-ULqFR-c6JK8b7SpotF4R-9v-E&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1zqJ1Eo-ULqFR-c6JK8b7SpotF4R-9v-E&sz=w1000"></div></div></div>
         </div>
 
         <!-- 16. SARITA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">SARITA PATTANAYAK</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">SARITA PATTANAYAK</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div></div>
         </div>
 
         <!-- 17. SNEHA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">SNEHA M</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 2,70,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,12,501</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="189.82">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">SNEHA M</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 2,70,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,12,501</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="189.82">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1HVvAYuzaLlLv3jKZ_rdnlTjOLJnbHHvq&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1HVvAYuzaLlLv3jKZ_rdnlTjOLJnbHHvq&sz=w1000"></div></div></div>
         </div>
 
         <!-- 18. LAKSHYA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">LAKSHYA R</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,68,221</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="181.83">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 63%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">LAKSHYA R</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,68,221</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="181.83">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 63%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1A_ucW6VkvaBWlafhrKFrlpv-zPQT1GQ-&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1A_ucW6VkvaBWlafhrKFrlpv-zPQT1GQ-&sz=w1000"></div></div></div>
         </div>
 
         <!-- 19. ANJALI -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">ANJALI K</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 10,13,297</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="168.88">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 60%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">ANJALI K</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 10,13,297</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="168.88">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 60%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=169Xf9taWnYtBVcDSX7f5R7qieqIGmn2K&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=169Xf9taWnYtBVcDSX7f5R7qieqIGmn2K&sz=w1000"></div></div></div>
         </div>
 
         <!-- 20. SONY -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">SONY THOMAS</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,79,314</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="146.88">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">SONY THOMAS</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,79,314</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="146.88">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1sugklwA9a8D9_-6vSsLHkGG33cFRnjJv&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1sugklwA9a8D9_-6vSsLHkGG33cFRnjJv&sz=w1000"></div></div></div>
         </div>
 
         <!-- 21. SHRAVANTH -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">SHRAVANTH V</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,99,045</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="141.22">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 50%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">SHRAVANTH V</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,99,045</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="141.22">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 50%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=19lAfaXzojQat1Rcnw_ezKow8UcR5c4VS&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=19lAfaXzojQat1Rcnw_ezKow8UcR5c4VS&sz=w1000"></div></div></div>
         </div>
 
         <!-- 22. MANJUNATH -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">MANJUNATH SHET</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 46,059</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 63,305</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="137.44">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 48%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">MANJUNATH SHET</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 46,059</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 63,305</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="137.44">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 48%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1lRj3unffvso4vKS7577UPJMmEWZBNqoc&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1lRj3unffvso4vKS7577UPJMmEWZBNqoc&sz=w1000"></div></div></div>
         </div>
 
         <!-- 23. SHREEJISHNU -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">SHREEJISHNU T</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,71,229</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="132.84">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 45%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">SHREEJISHNU T</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,71,229</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="132.84">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 45%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=16xTSE6MnhkFdmQtaTwc-GtRH1lCOiO5O&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=16xTSE6MnhkFdmQtaTwc-GtRH1lCOiO5O&sz=w1000"></div></div></div>
         </div>
 
         <!-- 24. NETHRA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">NETHRA M V</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 4,33,884</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="131.48">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 44%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">NETHRA M V</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,30,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 4,33,884</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="131.48">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 44%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1EXfpVwaY4hpRjn89MbZHJtFMu9JZwo9V&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1EXfpVwaY4hpRjn89MbZHJtFMu9JZwo9V&sz=w1000"></div></div></div>
         </div>
 
         <!-- 25. PRATIBHA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">PRATIBHA JS</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 90,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,13,644</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="126.27">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">PRATIBHA JS</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 90,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 1,13,644</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="126.27">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1E6nSL9omjhG6KVPG7r-THKfy4gHLZn-t&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1E6nSL9omjhG6KVPG7r-THKfy4gHLZn-t&sz=w1000"></div></div></div>
         </div>
 
         <!-- 26. CHETHANA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">CHETHANA N</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,80,738</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="125.56">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">CHETHANA N</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,80,738</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="125.56">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 42%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1LwYxFL2e8xT2IOXDuVUCKupyKlrQTYIc&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1LwYxFL2e8xT2IOXDuVUCKupyKlrQTYIc&sz=w1000"></div></div></div>
         </div>
 
         <!-- 27. RAVI -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">RAVI TIWARI</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 3,71,854</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="118.99">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 38%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">RAVI TIWARI</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 3,71,854</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="118.99">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 38%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Fj-womU2YE8ycFXaDtEGkyQhtXxlNSha&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Fj-womU2YE8ycFXaDtEGkyQhtXxlNSha&sz=w1000"></div></div></div>
         </div>
 
         <!-- 28. SAGAR -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">SAGAR CHOUBEY</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,74,323</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="116.02">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 37%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">SAGAR CHOUBEY</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,74,323</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="116.02">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 37%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1hD5TUxfgUs1eHH3eUy3Y_Ioa8WC7p2lB&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1hD5TUxfgUs1eHH3eUy3Y_Ioa8WC7p2lB&sz=w1000"></div></div></div>
         </div>
         
         <!-- NEW INDIVIDUAL: PRIYANKA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">PRIYANKA B M</div>
-                <div class="designation anim-text">TEAM LEADER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 2,25,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 2,31,152</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="102.73">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 30%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">PRIYANKA B M</div>
+                    <div class="designation anim-text">TEAM LEADER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 2,25,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 2,31,152</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="102.73">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 30%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1LeLEb-zY7vaVr37ckUufBQH1ulQG1ThT&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1LeLEb-zY7vaVr37ckUufBQH1ulQG1ThT&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: NISHANTH -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">NISHANTH A</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,03,120</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="101.64">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 29%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">NISHANTH A</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,95,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 5,03,120</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="101.64">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 29%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1DXlRB_kDLXODnFKcjqiWl4qEiXF4JYhB&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1DXlRB_kDLXODnFKcjqiWl4qEiXF4JYhB&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: KODA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">KODA PRUDVIRAJU</div>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,85,278</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="101.52">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 28%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">KODA PRUDVIRAJU</div>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 6,85,278</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="101.52">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 28%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1fvQ63j2VTh60Hl_KyB-pp16f4R5HvQm6&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1fvQ63j2VTh60Hl_KyB-pp16f4R5HvQm6&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: PRERANA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">PRERANA BULBULE</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 3,13,051</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="100.18">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 25%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">PRERANA BULBULE</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 3,12,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 3,13,051</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="100.18">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 25%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1gtvW5zOh0tkp3MxxSaxKzVPdfpESvhy7&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1gtvW5zOh0tkp3MxxSaxKzVPdfpESvhy7&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: HARSHITHA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
-                <div class="winner-name anim-text">HARSHITHA M</div>
-                <div class="designation anim-text">RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 4,62,627</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="100.03">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 25%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP INDIVIDUAL PERFORMER</div>
+                    <div class="winner-name anim-text">HARSHITHA M</div>
+                    <div class="designation anim-text">RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 4,62,500</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 4,62,627</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="100.03">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 25%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Jq_R9Kbt0outGsZFZ6ggtnEV-zqcnQrA&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Jq_R9Kbt0outGsZFZ6ggtnEV-zqcnQrA&sz=w1000"></div></div></div>
         </div>
 
         <!-- 34. CATEGORY: LEADERS COLLECTIVE -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
-            <div style="width: 80px; height: 2px; background: #fff; margin: 30px 0;" class="anim-text"></div>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
+                <div style="width: 80px; height: 2px; background: #fff; margin: 30px 0;" class="anim-text"></div>
+            </div>
         </div>
 
         <!-- 35. KARAN -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TEAM TARGET ACHIEVERS</div>
-                <div class="winner-name anim-text">KARAN KUMAR</div>
-                <div class="designation anim-text">TEAM LEADER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.90">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TEAM TARGET ACHIEVERS</div>
+                    <h1 class="winner-name anim-text">KARAN KUMAR</h1>
+                    <div class="designation anim-text">TEAM LEADER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.90">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
         </div>
 
         <!-- 36. MEGHNA -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TEAM TARGET ACHIEVERS</div>
-                <div class="winner-name anim-text">MEGHNA SINGH</div>
-                <div class="designation anim-text">MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.80">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TEAM TARGET ACHIEVERS</div>
+                    <div class="winner-name anim-text">MEGHNA SINGH</div>
+                    <div class="designation anim-text">MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Achieved</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.80">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div></div>
         </div>
 
         <!-- 37. CATEGORY: RISING STAR -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">RISING STAR</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">EXCEPTIONAL BREAKOUT PERFORMANCE</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold" style="border:none; font-size:4rem;">RISING STAR</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">EXCEPTIONAL BREAKOUT PERFORMANCE</p>
+            </div>
         </div>
 
         <!-- 38. ABINESH -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text" style="border-color:var(--gold-primary); color:var(--gold-primary);">THE WINNER</div>
-                <h1 class="winner-name anim-text" style="color:var(--gold-primary); -webkit-text-fill-color: initial;">ABINESH R</h1>
-                <div class="designation anim-text" style="color:#fff; border:none; padding:0;">RECORD BREAKING ACHIEVEMENT</div>
-                <div class="stats-box anim-text" style="border-top:none;">
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="644.74" style="font-size: clamp(3rem, 5vw, 5rem);">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%; background: #fff;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text" style="border-color:var(--gold-primary); color:var(--gold-primary);">THE WINNER</div>
+                    <h1 class="winner-name anim-text" style="color:var(--gold-primary); -webkit-text-fill-color: initial;">ABINESH R</h1>
+                    <div class="designation anim-text" style="color:#fff; border:none; padding:0;">RECORD BREAKING ACHIEVEMENT</div>
+                    <div class="stats-box anim-text" style="border-top:none;">
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="644.74" style="font-size: clamp(3rem, 5vw, 5rem);">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%; background: #fff;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card" style="border-color:var(--gold-primary);"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card" style="border-color:var(--gold-primary);"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1ShrYQzuLGXwgm_m9iHzcL1MuqTDC7vY5&sz=w1000"></div></div></div>
         </div>
 
         <!-- 39. CATEGORY: ATTRITION -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">HIGHEST RETENTION TEAM</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">EXCELLENCE IN TEAM RETENTION</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold" style="border:none; font-size:4rem;">HIGHEST RETENTION TEAM</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">EXCELLENCE IN TEAM RETENTION</p>
+            </div>
         </div>
 
         <!-- 40. DIKSHITA -->
-        <div class="slide-container layout-center">
-            <div class="photo-wrapper anim-img" style="width:300px; height:300px; border-radius:50%; margin-bottom:30px; overflow:hidden; border:2px solid var(--gold-primary);">
-                <img src="https://drive.google.com/thumbnail?id=1RjO5OkXShjzvWdTHhp0LqUjtOg1fAiUo&sz=w1000" style="width:100%; height:100%; object-fit:cover;">
+        <div class="slide-container">
+            <div class="layout-center">
+                <div class="photo-wrapper anim-img" style="width:300px; height:300px; border-radius:50%; margin-bottom:30px; overflow:hidden; border:2px solid var(--gold-primary);">
+                    <img src="https://drive.google.com/thumbnail?id=1RjO5OkXShjzvWdTHhp0LqUjtOg1fAiUo&sz=w1000" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <h1 class="winner-name anim-text" style="text-align:center;">DIKSHITA DAYANAND POOJARI</h1>
+                <div class="designation anim-text" style="border:none; text-align:center;">MANAGER</div>
             </div>
-            <h1 class="winner-name anim-text">DIKSHITA DAYANAND POOJARI</h1>
-            <div class="designation anim-text" style="border:none;">MANAGER</div>
         </div>
 
         <!-- 41. CATEGORY: TOP BD -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP REVENUE CONTRIBUTOR</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold" style="border:none; font-size:4rem;">TOP REVENUE CONTRIBUTOR</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">HIGHEST REVENUE GENERATOR INDIVIDUAL</p>
+            </div>
         </div>
 
         <!-- 42. SARITA (WINNER) -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP REVENUE CONTRIBUTOR</div>
-                <h1 class="winner-name anim-text">SARITA PATTANAYAK</h1>
-                <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Revenue</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP REVENUE CONTRIBUTOR</div>
+                    <h1 class="winner-name anim-text">SARITA PATTANAYAK</h1>
+                    <div class="designation anim-text">SENIOR RELATIONSHIP MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 6,75,000</span></div><div style="text-align:right;"><span class="stock-label">Revenue</span><br><span class="achieved-display">₹ 14,31,456</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="212.07">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 70%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1KslTGzBDlHZ04yqCjQurfz7ytxxgzHW2&sz=w1000"></div></div></div>
         </div>
 
         <!-- 43. CATEGORY: TOP TL -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold" style="border:none; font-size:4rem;">TOP TEAM LEADER</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">TEAM PERFORMANCE RANKING</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold" style="border:none; font-size:4rem;">TOP TEAM LEADER</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">TEAM PERFORMANCE RANKING</p>
+            </div>
         </div>
 
         <!-- 44. KARAN -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP TEAM LEADER</div>
-                <h1 class="winner-name anim-text">KARAN KUMAR</h1>
-                <div class="designation anim-text">TEAM LEADER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Team Revenue</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.85">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP TEAM LEADER</div>
+                    <h1 class="winner-name anim-text">KARAN KUMAR</h1>
+                    <div class="designation anim-text">TEAM LEADER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 18,95,026</span></div><div style="text-align:right;"><span class="stock-label">Team Revenue</span><br><span class="achieved-display">₹ 29,34,533</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="154.85">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 65%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w1000"></div></div></div>
         </div>
 
         <!-- 45. TOP MANAGER CATEGORY -->
-        <div class="slide-container layout-center">
-            <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">TOP MANAGER</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">OVERALL PERFORMANCE</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">TOP MANAGER</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: #888;">OVERALL PERFORMANCE</p>
+            </div>
         </div>
 
         <!-- 46. TOP MANAGER -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">TOP MANAGER</div>
-                <h1 class="winner-name anim-text">MEGHNA SINGH</h1>
-                <div class="designation anim-text">MANAGER</div>
-                <div class="stats-box anim-text">
-                    <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Total Revenue</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
-                    <div style="text-align:center;">
-                        <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.78">0</div><span class="percent-sym">%</span></div>
-                        <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+        <div class="slide-container">
+            <div class="layout-split">
+                <div class="content-panel">
+                    <div class="label-gold anim-text">TOP MANAGER</div>
+                    <h1 class="winner-name anim-text">MEGHNA SINGH</h1>
+                    <div class="designation anim-text">MANAGER</div>
+                    <div class="stats-box anim-text">
+                        <div class="stat-row"><div style="text-align:left;"><span class="stock-label">Target</span><br><span class="target-display">₹ 45,00,000</span></div><div style="text-align:right;"><span class="stock-label">Total Revenue</span><br><span class="achieved-display">₹ 57,95,049</span></div></div>
+                        <div style="text-align:center;">
+                            <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
+                            <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="128.78">0</div><span class="percent-sym">%</span></div>
+                            <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 55%;"></div></div>
+                        </div>
                     </div>
                 </div>
+                <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div></div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1FjX8XrdFUNtqEmJYTW1yd03BZcS58Tuo&sz=w1000"></div></div></div>
         </div>
 
         <!-- 47. CLOSING -->
-        <div class="slide-container layout-center">
-            <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
-            <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
+        <div class="slide-container">
+            <div class="layout-center">
+                <h1 class="hero-title anim-text" style="font-size:6rem;">THANK YOU</h1>
+                <p class="anim-text" style="font-family: var(--font-body); letter-spacing: 3px; color: var(--gold-primary); margin-top: 40px; font-size: 1.5rem;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
+            </div>
         </div>
 
     </div>
