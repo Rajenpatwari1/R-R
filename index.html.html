@@ -118,7 +118,7 @@
             opacity: 0; visibility: hidden;
             transition: opacity 0.6s ease-in-out;
             padding: 100px 40px 40px 40px; 
-            box-sizing: border-box;
+            box-sizing: border-box; /* Ensure padding doesn't affect centering */
         }
         
         .slide-container.active {
@@ -147,8 +147,8 @@
 
         .content-panel {
             display: flex; flex-direction: column;
-            align-items: center;
-            text-align: center;
+            align-items: center; /* Center horizontally */
+            text-align: center; /* Center text */
             width: 100%;
             justify-content: center;
         }
@@ -217,21 +217,21 @@
         .target-display {
             font-size: 1.4rem; font-weight: 500;
             color: #ccc; 
-            font-family: var(--font-head);
+            font-family: var(--font-ticker);
             text-align: left; 
         }
 
         .achieved-display {
             font-size: 1.8rem; font-weight: 700;
             color: var(--gold-primary); 
-            font-family: var(--font-head);
+            font-family: var(--font-ticker);
             text-shadow: 0 0 20px rgba(212, 175, 55, 0.4); 
             text-align: right;
             animation: pulse-gold-text 2s infinite ease-in-out;
         }
 
         .stock-percent { 
-            font-size: 4.5rem; font-family: var(--font-head); 
+            font-size: 4.5rem; font-family: var(--font-ticker); 
             color: var(--gold-primary); line-height: 1; 
             text-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
             animation: gold-pulse 3s infinite ease-in-out;
@@ -424,7 +424,7 @@
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ&sz=w1000"></div></div></div>
         </div>
 
-        <!-- 4. MIR JULEKHA (MOVED HERE) -->
+        <!-- 4. MIR JULEKHA -->
         <div class="slide-container layout-split">
             <div class="content-panel">
                 <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
@@ -479,7 +479,18 @@
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1-1qVlE5TI5DqwDCfnScfd9yRWT3w1XVt&sz=w1000"></div></div></div>
         </div>
 
-        <!-- 9. HR (SENIYA) -->
+        <!-- 9. SHAIK NAZMA -->
+        <div class="slide-container layout-split">
+            <div class="content-panel">
+                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
+                <h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1>
+                <div class="designation anim-text">OPERATION MANAGER</div>
+                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
+            </div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
+        </div>
+
+        <!-- 10. HR -->
         <div class="slide-container layout-split">
             <div class="content-panel">
                 <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
@@ -491,17 +502,6 @@
                 </div>
             </div>
             <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=15cDcqK-E8sRYLMhQxuy83HiuqHPd9KxC&sz=w1000"></div></div></div>
-        </div>
-
-        <!-- 10. SHAIK NAZMA (MOVED HERE) -->
-        <div class="slide-container layout-split">
-            <div class="content-panel">
-                <div class="label-gold anim-text">SPECIAL RECOGNITION AWARD</div>
-                <h1 class="winner-name anim-text">SHAIK NAZMA BEGUM</h1>
-                <div class="designation anim-text">OPERATION MANAGER</div>
-                <div class="stats-box anim-text"><span class="stock-label">Contribution</span><div class="stat-val highlight">EXCELLENCE IN SUPPORT</div></div>
-            </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1guCQDOP3VRiQWimhWHOhCukssOyMkG_2&sz=w1000"></div></div></div>
         </div>
 
         <!-- 11. CATEGORY: RM COLLECTIVE -->
@@ -858,7 +858,7 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Nishanth"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1DXlRB_kDLXODnFKcjqiWl4qEiXF4JYhB&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: KODA -->
@@ -876,7 +876,7 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Koda"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1fvQ63j2VTh60Hl_KyB-pp16f4R5HvQm6&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: PRERANA -->
@@ -894,7 +894,7 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Prerana"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1gtvW5zOh0tkp3MxxSaxKzVPdfpESvhy7&sz=w1000"></div></div></div>
         </div>
 
         <!-- NEW INDIVIDUAL: HARSHITHA -->
@@ -912,12 +912,12 @@
                     </div>
                 </div>
             </div>
-            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://placehold.co/400x500/000/FFF?text=Harshitha"></div></div></div>
+            <div class="photo-wrapper anim-img"><div class="photo-card"><div class="photo-inner"><img src="https://drive.google.com/thumbnail?id=1Jq_R9Kbt0outGsZFZ6ggtnEV-zqcnQrA&sz=w1000"></div></div></div>
         </div>
 
         <!-- 34. CATEGORY: LEADERS COLLECTIVE -->
         <div class="slide-container layout-center">
-            <h1 class="label-gold anim-text" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
+            <h1 class="label-gold" style="border:none; font-size:4rem;">TEAM TARGET ACHIEVERS</h1>
             <div style="width: 80px; height: 2px; background: #fff; margin: 30px 0;" class="anim-text"></div>
         </div>
 
@@ -972,7 +972,7 @@
                 <div class="stats-box anim-text" style="border-top:none;">
                     <div style="text-align:center;">
                         <span class="stock-label" style="display:block; margin-bottom:5px;">ACHIEVEMENT</span>
-                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="644.74" style="font-size:7rem;">0</div><span class="percent-sym">%</span></div>
+                        <div class="big-percent-wrapper"><span class="trend-up">▲</span><span class="plus-sign">+</span><div class="stock-percent count-up" data-val="644.74" style="font-size: clamp(3rem, 5vw, 5rem);">0</div><span class="percent-sym">%</span></div>
                         <div class="stock-bar-container"><div class="stock-bar-fill" style="width: 100%; background: #fff;"></div></div>
                     </div>
                 </div>
