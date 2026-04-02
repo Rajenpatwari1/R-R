@@ -7,6 +7,7 @@
     
     <!-- Professional Frameworks -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Change.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
     <!-- Expert Typography -->
@@ -244,7 +245,7 @@
 
         const supportExcellence = [
             { name: "Sanjay Srinivas", role: "Operation Manager", motive: "EXCELLENCE IN SUPPORT", img: "1wis7cgWxrSo7U6SwQ8KWZQ1aYivlGjhQ" },
-            { name: "Meenakhi", role: "HR-Intern", motive: "EXCELLENCE IN HIRING", img: null }
+            { name: "Meenakhi", role: "HR-Intern", motive: "EXCELLENCE IN HIRING", img: "1a83YBAC1lN-UQ3hjBEhKGnFgbLO6OluJ" }
         ];
 
         const leaderCollective = [
@@ -282,7 +283,7 @@
             html += `<div class="slide"><div class="content-card">
                 <p class="page-tag">Performance Rank ${String(a.rank).padStart(2, '0')}</p>
                 <div class="portrait-frame"><div class="halo"></div><img src="${pic}" class="portrait-img"></div>
-                <h1 class="main-title">${a.name}</h1>
+                <h1 class="main-title" style="font-family: var(--f-display); font-size: clamp(2rem, 6vh, 4rem); font-weight: 900;">${a.name}</h1>
                 <p class="role-strip">Individual Achievement</p>
                 <div class="metrics-grid">
                     <div class="m-card"><span class="m-lbl">target</span><span class="m-val">${a.target}</span></div>
@@ -298,7 +299,7 @@
             html += `<div class="slide"><div class="content-card">
                 <p class="page-tag">Team Collective Achievement</p>
                 <div class="portrait-frame"><div class="halo"></div><img src="https://drive.google.com/thumbnail?id=${l.img}&sz=w512" class="portrait-img"></div>
-                <h1 class="main-title">${l.name}</h1>
+                <h1 class="main-title" style="font-family: var(--f-display); font-size: clamp(2rem, 6vh, 4rem); font-weight: 900;">${l.name}</h1>
                 <p class="role-strip">${l.role}</p>
                 <div class="metrics-grid">
                     <div class="m-card"><span class="m-lbl">target</span><span class="m-val">${l.target}</span></div>
@@ -322,12 +323,21 @@
             </div>
         </div></div>`;
 
-        // 6. TOP REVENUE CONTRIBUTOR (Roshan XV)
+        // 6. HIGHEST RETENTION TEAM
+        html += `<div class="slide gate"><h1 class="announcement-title">HIGHEST RETENTION TEAM</h1><p>EXCELLENCE IN TEAM RETENTION</p></div>`;
+        html += `<div class="slide"><div class="content-card" style="border: 2px solid var(--gold-prestige); background: rgba(255,255,255,0.6)">
+            <p class="page-tag" style="background:var(--obsidian); color:#FFF; padding:6px 20px; border-radius:2px;">TEAM LOYALTY HONORS</p>
+            <div class="portrait-frame" style="transform:scale(1.05)"><div class="halo" style="opacity:0.8; border-width:2px"></div><img src="https://drive.google.com/thumbnail?id=1aPvSxgBQ1iI9KJWg0L4S2sIm3l3aeZZK&sz=w800" class="portrait-img"></div>
+            <h1 class="main-name" style="color:var(--gold-prestige); font-family: var(--f-display); font-size: clamp(2.5rem, 8vh, 5.5rem); font-weight: 900;">Ranjan Kumar</h1>
+            <div class="m-card active" style="width:100%; border-radius:50px; margin-top:10px; border-bottom:none; border: 1px solid var(--gold-prestige);"><span class="m-lbl">Achievement</span><span class="m-val" style="color:var(--gold-prestige); letter-spacing:2px;">EXCELLENCE IN TEAM RETENTION</span></div>
+        </div></div>`;
+
+        // 7. TOP REVENUE CONTRIBUTOR (Roshan XV)
         html += `<div class="slide gate"><h1 class="announcement-title">TOP REVENUE CONTRIBUTOR</h1><p>Special Recognization</p></div>`;
         html += `<div class="slide"><div class="content-card" style="border: 2px solid var(--gold-prestige); background: rgba(255,255,255,0.6)">
             <p class="page-tag" style="background:var(--obsidian); color:#FFF; padding:6px 20px; border-radius:2px;">ULTIMATE ACHIEVER</p>
             <div class="portrait-frame" style="transform:scale(1.05)"><div class="halo" style="opacity:0.8; border-width:2px"></div><img src="https://drive.google.com/thumbnail?id=1zqJ1Eo-ULqFR-c6JK8b7SpotF4R-9v-E&sz=w800" class="portrait-img"></div>
-            <h1 class="main-name" style="color:var(--gold-prestige)">Roshan X V</h1>
+            <h1 class="main-name" style="color:var(--gold-prestige); font-family: var(--f-display); font-size: clamp(2.5rem, 8vh, 5.5rem); font-weight: 900;">Roshan X V</h1>
             <p class="role-strip" style="border:none">TOP REVENUE CONTRIBUTOR</p>
             <div class="metrics-grid">
                 <div class="m-card"><span class="m-lbl">target</span><span class="m-val">₹ 6,00,000</span></div>
@@ -336,12 +346,12 @@
             </div>
         </div></div>`;
 
-        // 7. Top Team Leader Announcement
+        // 8. Top Team Leader Announcement
         html += `<div class="slide gate"><p>Announcing the Elite</p><h1 class="announcement-title">TOP TEAM LEADER OF THE QUARTER</h1></div>`;
         html += `<div class="slide"><div class="content-card" style="border: 2px solid var(--gold-prestige); background: rgba(255,255,255,0.6)">
             <p class="page-tag" style="background:var(--obsidian); color:#FFF; padding:6px 20px; border-radius:2px;">TEAM LEADERSHIP HONORS</p>
             <div class="portrait-frame" style="transform:scale(1.05)"><div class="halo" style="opacity:0.8; border-width:2px"></div><img src="https://drive.google.com/thumbnail?id=1AOFBaNn_3QoZoF7Mgf1i82kUKOFRcfou&sz=w800" class="portrait-img"></div>
-            <h1 class="main-name" style="color:var(--gold-prestige)">Karan Kumar</h1>
+            <h1 class="main-name" style="color:var(--gold-prestige); font-family: var(--f-display); font-size: clamp(2.5rem, 8vh, 5.5rem); font-weight: 900;">Karan Kumar</h1>
             <p class="role-strip" style="border:none">Top Team Leader</p>
             <div class="metrics-grid">
                 <div class="m-card"><span class="m-lbl">target</span><span class="m-val">₹ 25,84,139</span></div>
@@ -350,12 +360,12 @@
             </div>
         </div></div>`;
 
-        // 8. Top Manager Announcement
+        // 9. Top Manager Announcement
         html += `<div class="slide gate"><p>Announcing the Executive</p><h1 class="announcement-title">TOP MANAGER OF THE QUARTER</h1></div>`;
         html += `<div class="slide"><div class="content-card" style="border: 2px solid var(--gold-prestige); background: rgba(255,255,255,0.6)">
             <p class="page-tag" style="background:var(--obsidian); color:#FFF; padding:6px 20px; border-radius:2px;">EXECUTIVE LEADERSHIP</p>
             <div class="portrait-frame" style="transform:scale(1.05)"><div class="halo" style="opacity:0.8; border-width:2px"></div><img src="https://drive.google.com/thumbnail?id=1RjO5OkXShjzvWdTHhp0LqUjtOg1fAiUo&sz=w800" class="portrait-img"></div>
-            <h1 class="main-name" style="color:var(--gold-prestige)">Dikshita Poojari</h1>
+            <h1 class="main-name" style="color:var(--gold-prestige); font-family: var(--f-display); font-size: clamp(2.5rem, 8vh, 5.5rem); font-weight: 900;">Dikshita Poojari</h1>
             <p class="role-strip" style="border:none">Top Manager</p>
             <div class="metrics-grid">
                 <div class="m-card"><span class="m-lbl">target</span><span class="m-val">₹ 54,36,814</span></div>
@@ -364,7 +374,7 @@
             </div>
         </div></div>`;
 
-        // 9. THANK YOU Page
+        // 10. THANK YOU Page
         html += `<div class="slide gate">
             <h1 style="font-size:clamp(3.5rem, 12vh, 9rem); margin-bottom: 20px;">THANK YOU</h1>
             <p style="font-family: var(--f-accent); color: var(--gold-prestige); letter-spacing: 8px; font-weight: 800; text-transform: uppercase;">LET'S ACHIEVE MORE IN NEXT QUARTER</p>
